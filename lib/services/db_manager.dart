@@ -32,6 +32,7 @@ class DbManager{
             path TEXT,
             title TEXT,
             favourite INTEGER,
+            show_cover INTEGER,
             author TEXT,
             modification_date NUMERIC
           )'''
@@ -53,32 +54,33 @@ class DbManager{
 
     for(var file in files){
       if(file is File){
-        String fileType = pth.extension(file.path);
-
-        if(fileType == ".mp3" || fileType == ".flac"){
-          Duration? songDuration;
-          String? songArtist;
-          String? songTitle;
-
-
-          if(fileType == ".mp3"){
-            final parser = ID3TagReader.path(file.path);
-            final tag = parser.readTagSync();
-            songArtist = tag.artist ?? "Nieznany Artysta";
-            songTitle = tag.title ?? pth.basename(file.path);
-          }
-          await insertSong(Song(title: songTitle, filePath: file.path, author: songArtist, duration: songDuration, favourite: false, modification_date: file.lastModifiedSync()),db);
+          await insertSongFromFile(file,db);
         }
-      }
     }
+
   }
 
-  Future<void> insertSong(Song song,Database db) async{
-    await db.insert(
-      'songs',
-      song.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
+  Future<void> insertSongFromFile(File file,Database db) async {
+    String fileType = pth.extension(file.path);
+
+    if (fileType == ".mp3" || fileType == ".flac") {
+      Duration? songDuration;
+      String? songArtist;
+      String? songTitle;
+
+      if (fileType == ".mp3") {
+        final parser = ID3TagReader.path(file.path);
+        final tag = parser.readTagSync();
+        songArtist = tag.artist;
+        songTitle = tag.title;
+      }
+
+      await db.insert(
+          'songs',
+          {'path' : file.path, 'title' : songTitle, 'favourite' : 0, 'show_cover' : 0, 'author' : songArtist, 'modification_date' : file.lastModifiedSync().microsecondsSinceEpoch},
+          conflictAlgorithm: ConflictAlgorithm.replace
+      );
+    }
   }
 
   Future<Song?> getRandomSong() async{
@@ -92,7 +94,7 @@ class DbManager{
     final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs ORDER BY modification_date DESC');
     List<Song> songs = [];
     for(var songMap in map){
-      songs.add(Song.fromMap(songMap));
+      songs.add(Song.fromDbMap(songMap));
     }
     return songs;
   }
@@ -129,7 +131,7 @@ class DbManager{
 
   Future<Song?> getSongFromMap(List<Map<String,dynamic>> map) async{
     if(map.isEmpty || map.length > 1) return null;
-    Song song = await Song.fromMap(map.first);
+    Song song = await Song.fromDbMap(map.first);
     song.duration = await getSongDuration(song.filePath);
     return song;
   }

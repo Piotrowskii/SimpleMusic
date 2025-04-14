@@ -1,27 +1,23 @@
-import 'dart:ffi';
-import 'dart:typed_data';
-
-
 class Song{
 
-  int? id;
+  int id;
   String? title;
   String filePath;
   String? author;
   bool favourite;
+  bool showCover;
   DateTime modification_date;
   Duration? duration;
-  Uint8List? art;
 
   Song({
-    this.id,
+    required this.id,
     this.title,
     required this.filePath,
     this.author,
     required this.favourite,
+    required this.showCover,
     required this.modification_date,
-    this.duration,
-    this.art
+    this.duration
   });
 
   @override
@@ -34,24 +30,26 @@ class Song{
   @override
   int get hashCode => filePath.hashCode;
 
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toDbMap(){
     return {
       'title' : title,
       'path' : filePath,
       'author' : author,
       'favourite' : favourite ? 1 : 0,
+      'show_cover' : showCover ? 1 : 0,
       'modification_date' : modification_date.microsecondsSinceEpoch,
     };
   }
 
 
-  static Song fromMap(Map<String,dynamic> map){
+  static Song fromDbMap(Map<String,dynamic> map){
     return Song(
       id : map['id'],
       title: map['title'],
       filePath: map['path'],
       author: map['author'],
       favourite: map['favourite'] as int == 1,
+      showCover: map['show_cover'] as int == 1,
       modification_date: DateTime.fromMicrosecondsSinceEpoch(map['modification_date']),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
-import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/services/audio_session_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/permission_service.dart';

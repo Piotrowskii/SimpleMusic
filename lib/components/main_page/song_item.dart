@@ -26,7 +26,7 @@ class _SongItemState extends State<SongItem> {
 
     return InkWell(
       onTap: (){
-        if(song.id != null) player.playSongById(song.id!);
+        player.playSongById(song.id);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => PlayerPage()),

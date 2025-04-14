@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
     getAllSongs();
   }
 
-  //TODO: ZANIM ZACZNIESZ WPIERDOL TO NA PRIVATE GITHUBA, zmien songartimage na statellsss (zrob zeby jeszcze boola brał i wtedy da art albo default), wypierdol art z klasy song, Dodaj art jako gimik tylko w odtwarzaczu, zmien dodawnie piosnek do bazy żeby nie tworzyło Song to wtedy id nie będzem mogło być null
+  //TODO: , zmien songartimage na statellsss (zrob zeby jeszcze boola brał i wtedy da art albo default), wypierdol art z klasy song, Dodaj art jako gimik tylko w odtwarzaczu, zmien dodawnie piosnek do bazy żeby nie tworzyło Song to wtedy id nie będzem mogło być null
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,8 @@ class _MainPageState extends State<MainPage> {
                     return SongItem(song: allSongs[index],);
                   },
                 ),
-              )
+              ),
+              SizedBox(height: 50,)
             ],
           ),
         ),

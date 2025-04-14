@@ -7,6 +7,7 @@ final locator = GetIt.instance;
 
 Future<void> setup() async{
   DbManager dbManager = DbManager();
+  await dbManager.initDatabase();
   await dbManager.saveSongsToDb();
 
   locator.registerSingleton<DbManager>(dbManager);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:id3tag/id3tag.dart';
 import 'package:simple_music_app1/components/player_page/button_row.dart';
 import 'package:simple_music_app1/components/player_page/music_slider.dart';
+import 'package:simple_music_app1/components/song_art_image.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 import '../services/get_it_register.dart';
 
@@ -31,13 +32,6 @@ class _PlayerPageState extends State<PlayerPage> {
                   builder: (context,song,nonUpdating){
 
                     if(song != null){
-
-                      final parser = ID3TagReader.path(song.filePath);
-                      final tag = parser.readTagSync();
-                      if(tag.pictures.isNotEmpty){
-                        song.art = Uint8List.fromList(tag.pictures.first.imageData);
-                      }
-
                       return Flexible(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -45,14 +39,10 @@ class _PlayerPageState extends State<PlayerPage> {
                             SizedBox(
                               height: 320,
                               width: 320,
-                              child: song.art != null ?
-                              AspectRatio(
+                              child: AspectRatio(
                                   aspectRatio: 1,
-                                  child: Image(
-                                    image: MemoryImage(song.art!),
-                                    fit: BoxFit.cover,)
-                              ) :
-                              Container(decoration: BoxDecoration(color: Colors.red),),
+                                  child: SongArtImage(song: song)
+                              )
                             ),
                             SizedBox(height: 10,),
                             Row(
