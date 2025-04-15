@@ -33,15 +33,29 @@ class _SongItemState extends State<SongItem> {
         );
       },
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 75),
+        constraints: BoxConstraints(maxHeight: 55),
         child: Row(
           children: [
             SongArtImage(song: song),
             SizedBox(width: 10,),
             Flexible(
-              child: Text(
-                song.title ?? pth.basenameWithoutExtension(song.filePath),
-                overflow: TextOverflow.ellipsis,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    song.title ?? pth.basenameWithoutExtension(song.filePath),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    song.author ?? "Nieznany wykonawca",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey
+                    ),
+                  )
+                ],
               ),
             )
           ],

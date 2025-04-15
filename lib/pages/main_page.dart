@@ -105,9 +105,10 @@ class _MainPageState extends State<MainPage> {
               SizedBox(height: 15,),
               Expanded(
                 child: ListView.separated(
+                  cacheExtent: 300,
                   shrinkWrap: true,
                   itemCount: allSongs.length,
-                  separatorBuilder: (context, index) => Divider(),
+                  separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),),
                   itemBuilder: (context,index) {
                     return SongItem(song: allSongs[index],);
                   },
