@@ -36,7 +36,7 @@ class _SongItemState extends State<SongItem> {
         constraints: BoxConstraints(maxHeight: 55),
         child: Row(
           children: [
-            SongArtImage(song: song),
+            SongArtImage(key: Key(song.filePath), song: song),
             SizedBox(width: 10,),
             Flexible(
               child: Column(

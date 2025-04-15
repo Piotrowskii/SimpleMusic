@@ -6,6 +6,7 @@ import 'package:simple_music_app1/components/player_page/button_row.dart';
 import 'package:simple_music_app1/components/player_page/music_slider.dart';
 import 'package:simple_music_app1/components/song_art_image.dart';
 import 'package:simple_music_app1/services/music_player.dart';
+import '../models/song.dart';
 import '../services/get_it_register.dart';
 
 class PlayerPage extends StatefulWidget {
@@ -41,7 +42,7 @@ class _PlayerPageState extends State<PlayerPage> {
                               width: 320,
                               child: AspectRatio(
                                   aspectRatio: 1,
-                                  child: SongArtImage(song: song)
+                                  child: SongArtImage(key: Key(song.filePath),song: song) // jak statefull ma oninit to trzeba key :(
                               )
                             ),
                             SizedBox(height: 10,),
