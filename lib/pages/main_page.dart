@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_music_app1/components/main_page/mini_player.dart';
 import 'package:simple_music_app1/components/main_page/song_item.dart';
 
 import '../models/song.dart';
@@ -39,6 +40,7 @@ class _MainPageState extends State<MainPage> {
         child: Padding(
           padding: EdgeInsets.only(
             top: 20,
+            bottom: 10,
             left: 10,
             right: 10
           ),
@@ -114,7 +116,8 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
               ),
-              SizedBox(height: 50,)
+              SizedBox(height: 5,),
+              MiniPlayer()
             ],
           ),
         ),

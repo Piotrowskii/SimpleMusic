@@ -25,8 +25,8 @@ class MusicPlayer{
         playSong(song);
       }
 
-      if(isPlaying.value) resumeSong();
-      else await pauseSong();
+      if(isPlaying.value) player.play();
+      else await  player.stop();
     });
 
     player.positionStream.listen((position) async{
@@ -69,12 +69,12 @@ class MusicPlayer{
   }
 
 
-  Future<void> resumeSong() async{
-    player.play();
+  Future<void> resumeSongButton() async{
+    isPlaying.value = true;
   }
 
-  Future<void> pauseSong() async{
-    await player.stop();
+  Future<void> pauseSongButton() async{
+    isPlaying.value = false;
   }
 
   void playRandomSong() async{

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:path/path.dart' as pth;
 import 'package:flutter/material.dart';
 import 'package:id3tag/id3tag.dart';
 import 'package:simple_music_app1/components/player_page/button_row.dart';
@@ -51,7 +52,7 @@ class _PlayerPageState extends State<PlayerPage> {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    song.title ?? "Nieznany tytuł",
+                                    song.title ?? pth.basenameWithoutExtension(song.filePath),
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: Theme.of(context).colorScheme.onSurface,

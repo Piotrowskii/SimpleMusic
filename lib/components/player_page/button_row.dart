@@ -58,7 +58,7 @@ class _ButtonRowState extends State<ButtonRow> {
             return Ink(
               decoration: ShapeDecoration(color: Colors.orange.shade300, shape: CircleBorder()),
               child: IconButton(
-                  onPressed: isPlaying ? (){musicPlayer.isPlaying.value = false;} : (){musicPlayer.isPlaying.value = true;},
+                  onPressed: isPlaying ? (){musicPlayer.pauseSongButton();} : (){musicPlayer.resumeSongButton();},
                   icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, color: Theme.of(context).canvasColor, size: 50)),
             );
           },
