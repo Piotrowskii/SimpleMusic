@@ -132,4 +132,8 @@ class MusicPlayer{
     await playSong(newSong);
   }
 
+  void changeSongFavourite(int id, bool favourite) async{
+    await db.changeSongFavourite(id, favourite);
+  }
+
 }

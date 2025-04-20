@@ -8,10 +8,11 @@ import 'package:simple_music_app1/services/music_player.dart';
 import '../../models/song.dart';
 
 class SongItem extends StatefulWidget {
-  Song song;
-  MusicPlayer player = locator<MusicPlayer>();
+  final Song song;
+  final VoidCallback? customOnTap;
+  final MusicPlayer player = locator<MusicPlayer>();
 
-  SongItem({super.key,required this.song});
+  SongItem({super.key,required this.song, this.customOnTap});
 
   @override
   State<SongItem> createState() => _SongItemState();
@@ -26,6 +27,7 @@ class _SongItemState extends State<SongItem> {
 
     return InkWell(
       onTap: (){
+        widget.customOnTap?.call();
         player.playSongById(song.id);
         Navigator.push(
           context,

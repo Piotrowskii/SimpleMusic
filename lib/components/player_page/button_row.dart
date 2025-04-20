@@ -28,48 +28,81 @@ class _ButtonRowState extends State<ButtonRow> {
           valueListenable: musicPlayer.shuffleMode,
           builder: (context, mode, nonUpdaing) {
               IconData schuffleIcon;
-              VoidCallback test = (){};
+              VoidCallback shuffleFunction = (){};
               if(mode == Shuffle.loopOne){
                 schuffleIcon = Icons.repeat_one;
-                test = (){musicPlayer.shuffleMode.value = Shuffle.random;};
+                shuffleFunction = (){musicPlayer.shuffleMode.value = Shuffle.random;};
               }
               else if(mode == Shuffle.random){
                 schuffleIcon = Icons.shuffle;
-                test = (){musicPlayer.shuffleMode.value = Shuffle.normal;};
+                shuffleFunction = (){musicPlayer.shuffleMode.value = Shuffle.normal;};
               }
               else{
                 schuffleIcon = Icons.repeat;
-                test = (){musicPlayer.shuffleMode.value = Shuffle.loopOne;};
+                shuffleFunction = (){musicPlayer.shuffleMode.value = Shuffle.loopOne;};
               }
 
-              return Ink(
-                decoration: ShapeDecoration(color: Colors.orange.shade100, shape: CircleBorder()),
-                child: IconButton(onPressed: test, icon: Icon(schuffleIcon, color: Theme.of(context).canvasColor)),
+              return InkWell(
+                onTap: shuffleFunction,
+                customBorder: CircleBorder(),
+                child: Ink(
+                  decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Icon(schuffleIcon, color: Theme.of(context).canvasColor, size: 25,),
+                  ),
+                ),
               );
           }
         ),
-        Ink(
-          decoration: ShapeDecoration(color: Colors.orange.shade100, shape: CircleBorder()),
-          child: IconButton(onPressed: ()=>{musicPlayer.playPreviousSongButton()}, icon: Icon(Icons.skip_previous, color: Theme.of(context).canvasColor)),
+        InkWell(
+          onTap: (){musicPlayer.playPreviousSongButton();},
+          customBorder: CircleBorder(),
+          child: Ink(
+            decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(Icons.skip_previous, color: Theme.of(context).canvasColor, size: 25,),
+            ),
+          ),
         ),
         ValueListenableBuilder(
           valueListenable: musicPlayer.isPlaying,
           builder: (context, isPlaying, nonUpdaing){
-            return Ink(
-              decoration: ShapeDecoration(color: Colors.orange.shade300, shape: CircleBorder()),
-              child: IconButton(
-                  onPressed: isPlaying ? (){musicPlayer.pauseSongButton();} : (){musicPlayer.resumeSongButton();},
-                  icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, color: Theme.of(context).canvasColor, size: 50)),
+            return InkWell(
+              onTap: isPlaying ? (){musicPlayer.pauseSongButton();} : (){musicPlayer.resumeSongButton();},
+              customBorder: CircleBorder(),
+              child: Ink(
+                decoration: ShapeDecoration(color: Colors.grey.shade400, shape: CircleBorder()),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Icon(isPlaying ? Icons.pause : Icons.play_arrow, color: Theme.of(context).canvasColor, size: 50,),
+                ),
+              ),
             );
           },
         ),
-        Ink(
-          decoration: ShapeDecoration(color: Colors.orange.shade100, shape: CircleBorder()),
-          child: IconButton(onPressed: ()=>{musicPlayer.playNextSongButton()}, icon: Icon(Icons.skip_next_outlined, color: Theme.of(context).canvasColor)),
+        InkWell(
+          onTap: (){musicPlayer.playNextSongButton();},
+          customBorder: CircleBorder(),
+          child: Ink(
+            decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(Icons.skip_next, color: Theme.of(context).canvasColor, size: 25,),
+            ),
+          ),
         ),
-        Ink(
-          decoration: ShapeDecoration(color: Colors.orange.shade100, shape: CircleBorder()),
-          child: IconButton(onPressed: ()=>{}, icon: Icon(Icons.history, color: Theme.of(context).canvasColor)),
+        InkWell(
+          onTap: (){},
+          customBorder: CircleBorder(),
+          child: Ink(
+            decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(Icons.history, color: Theme.of(context).canvasColor, size: 25,),
+            ),
+          ),
         )
       ],
     );

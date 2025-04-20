@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:id3tag/id3tag.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../models/song.dart';
 
@@ -17,6 +18,7 @@ class SongArtImage extends StatefulWidget {
 
 class _SongArtImageState extends State<SongArtImage> {
   Uint8List? imageList;
+  bool showImage = false;
 
   Future<bool> validImage(list) async{
     try {
@@ -29,7 +31,7 @@ class _SongArtImageState extends State<SongArtImage> {
   }
 
   void renderImage() async{
-    if(widget.song.showCover == false){
+    if(widget.song.showCover == true){
 
       Uint8List? potencialList;
       final parser = ID3TagReader.path(widget.song.filePath);
@@ -38,15 +40,27 @@ class _SongArtImageState extends State<SongArtImage> {
         potencialList = Uint8List.fromList(tag.pictures.first.imageData);
         if(await validImage(potencialList)){
           setState(() {
+            showImage = true;
             imageList = potencialList;
           });
         }
         else{
           setState(() {
+            showImage = true;
             imageList = null;
           });
         }
       }
+      else{
+        setState(() {
+          showImage = true;
+        });
+      }
+    }
+    else{
+      setState(() {
+        showImage = true;
+      });
     }
   }
 
@@ -59,32 +73,43 @@ class _SongArtImageState extends State<SongArtImage> {
   @override
   Widget build(BuildContext context){
 
-    if(imageList != null){
-
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: AspectRatio(
+    if(showImage){
+      if(imageList != null){
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: AspectRatio(
+              aspectRatio: 1,
+              child: Image(
+                  image: MemoryImage(imageList!),
+                  fit: BoxFit.cover
+              )
+          ),
+        );
+      }
+      else{
+        return AspectRatio(
             aspectRatio: 1,
-            child: Image(
-                image: MemoryImage(imageList!),
-                fit: BoxFit.cover
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.transparent.withAlpha(10)
+              ),
+              child: Icon(Icons.music_note, size: 30,),
             )
-        ),
-      );
+        );
+
+      }
     }
     else{
-
-      return AspectRatio(
-        aspectRatio: 1,
-        child: Container(
-          decoration: BoxDecoration(
+      return Skeletonizer.zone(
+        enabled: true,
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Bone.square(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.transparent.withAlpha(10)
           ),
-          child: Icon(Icons.music_note, size: 30,),
-        )
+        ),
       );
-
     }
 
 

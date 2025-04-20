@@ -31,23 +31,23 @@ class _MainPageState extends State<MainPage> {
     getAllSongs();
   }
 
-  //TODO: , zmien songartimage na statellsss (zrob zeby jeszcze boola brał i wtedy da art albo default), wypierdol art z klasy song, Dodaj art jako gimik tylko w odtwarzaczu, zmien dodawnie piosnek do bazy żeby nie tworzyło Song to wtedy id nie będzem mogło być null
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
             top: 20,
-            bottom: 10,
+            bottom: 15,
             left: 10,
             right: 10
           ),
           child: Column(
             children: [
               SearchBar(
-                backgroundColor: WidgetStatePropertyAll(Colors.white),
+                shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+                backgroundColor: WidgetStatePropertyAll(Colors.grey.shade200),
                 leading: Icon(
                   Icons.search
                 ),
@@ -56,26 +56,55 @@ class _MainPageState extends State<MainPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.access_time),
-                        iconSize: 40,
+                  InkWell(
+                    onTap: (){},
+                    borderRadius: BorderRadius.circular(10),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10)
                       ),
-                      Text("Ostatnie")
-                    ],
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                            left: 12,
+                            right: 12
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.settings, size: 40),
+                            Text("Ustawienia")
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.star_border),
-                        iconSize: 40,
+                  InkWell(
+                    onTap: (){},
+                    borderRadius: BorderRadius.circular(10),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10)
                       ),
-                      Text("Ulubione")
-                    ],
-                  )
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                          left: 20,
+                          right: 20
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.access_time, size: 40),
+                            Text("Ostatnie")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  FavouriteButton()
                 ],
               ),
               SizedBox(height: 30,),
@@ -108,7 +137,6 @@ class _MainPageState extends State<MainPage> {
               Expanded(
                 child: ListView.separated(
                   cacheExtent: 1200,
-                  shrinkWrap: true,
                   itemCount: allSongs.length,
                   separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),),
                   itemBuilder: (context,index) {
@@ -124,4 +152,83 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  InkWell FavouriteButton(){
+    return InkWell(
+      onTap: () {
+        showModalBottomSheet<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return FutureBuilder<List<Song>>(
+              future: db.getFavouriteSongs(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError || !snapshot.hasData) {
+                  return Center(child: Text('Błąd przy pobieraniu ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+                }
+                else {
+                  List<Song> favouriteSongs = snapshot.data!;
+
+                  if(favouriteSongs.isNotEmpty){
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10,
+                          left: 10,
+                          right: 10
+                      ),
+                      child: Column(
+                        children: [
+                          Text("Ulubione Piosenki", style: TextStyle(fontWeight: FontWeight.bold),),
+                          SizedBox(height: 15,),
+                          Expanded(
+                            child: ListView.separated(
+                              itemCount: favouriteSongs.length,
+                              separatorBuilder: (context, index) =>
+                                  Divider(color: Colors.grey.withAlpha(50)),
+                              itemBuilder: (context, index) {
+                                return SongItem(
+                                  song: favouriteSongs[index],
+                                  customOnTap: (){Navigator.pop(context);},
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  else{
+                    return Center(child: Text('Nie masz ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+                  }
+                }
+              },
+            );
+          }
+        );
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: Ink(
+        decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(10)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+              top: 10,
+              bottom: 10,
+              left: 20,
+              right: 20
+          ),
+          child: Column(
+            children: [
+              Icon(Icons.star_border, size: 40),
+              Text("Ulubione")
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 }

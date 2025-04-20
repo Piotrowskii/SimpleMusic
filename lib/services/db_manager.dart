@@ -34,7 +34,8 @@ class DbManager{
             favourite INTEGER,
             show_cover INTEGER,
             author TEXT,
-            modification_date NUMERIC
+            modification_date NUMERIC,
+            favourite_date NUMERIC
           )'''
         );
       }
@@ -77,7 +78,7 @@ class DbManager{
 
       await db.insert(
           'songs',
-          {'path' : file.path, 'title' : songTitle, 'favourite' : 0, 'show_cover' : 0, 'author' : songArtist, 'modification_date' : file.lastModifiedSync().microsecondsSinceEpoch},
+          {'path' : file.path, 'title' : songTitle, 'favourite' : 0, 'show_cover' : 1, 'author' : songArtist, 'modification_date' : file.lastModifiedSync().microsecondsSinceEpoch},
           conflictAlgorithm: ConflictAlgorithm.replace
       );
     }
@@ -98,6 +99,16 @@ class DbManager{
     }
     return songs;
   }
+
+  Future<List<Song>> getFavouriteSongs() async{
+    final db = await database;
+    final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs WHERE favourite = 1 ORDER BY favourite_date DESC');
+    List<Song> songs = [];
+    for(var songMap in map){
+      songs.add(Song.fromDbMap(songMap));
+    }
+    return songs;
+}
 
   Future<Song?> getSongById(int id) async{
     final db = await database;
@@ -128,6 +139,12 @@ class DbManager{
     final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs ORDER BY modification_date ASC LIMIT 1');
     return getSongFromMap(map);
   }
+
+  Future<void> changeSongFavourite(int id, bool favourite) async{
+    final db = await database;
+    await db.rawQuery("UPDATE songs SET favourite = ? , favourite_date = ? WHERE id = ?",[favourite ? 1 : 0,DateTime.now().microsecondsSinceEpoch,id]);
+  }
+
 
   Future<Song?> getSongFromMap(List<Map<String,dynamic>> map) async{
     if(map.isEmpty || map.length > 1) return null;

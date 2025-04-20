@@ -43,7 +43,7 @@ class _PlayerPageState extends State<PlayerPage> {
                               width: 320,
                               child: AspectRatio(
                                   aspectRatio: 1,
-                                  child: SongArtImage(key: Key(song.filePath),song: song) // jak statefull ma oninit to trzeba key :(
+                                  child: SongArtImage(key: Key(song.id.toString()),song: song) // jak statefull ma oninit to trzeba key :(
                               )
                             ),
                             SizedBox(height: 10,),
@@ -61,9 +61,14 @@ class _PlayerPageState extends State<PlayerPage> {
                                     ),
                                   ),
                                 ),
-                                Icon(
-                                    Icons.star_border,
-                                    size: 35
+                                IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      song.favourite = !song.favourite;
+                                      musicPlayer.changeSongFavourite(song.id, song.favourite);
+                                    });
+                                  },
+                                  icon: Icon(song.favourite ? Icons.star : Icons.star_border, size: 35,)
                                 )
                               ],
                             ),

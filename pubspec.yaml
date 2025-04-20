@@ -43,6 +43,7 @@ dependencies:
   path: ^1.9.1
   audio_session: ^0.1.25
   id3tag: ^0.2.0
+  skeletonizer: ^1.4.3
 
 
 dev_dependencies:
