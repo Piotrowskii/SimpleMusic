@@ -80,30 +80,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: (){},
-                    borderRadius: BorderRadius.circular(10),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          bottom: 10,
-                          left: 20,
-                          right: 20
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.access_time, size: 40),
-                            Text("Ostatnie")
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  RecentButton(),
                   FavouriteButton()
                 ],
               ),
@@ -146,6 +123,84 @@ class _MainPageState extends State<MainPage> {
               ),
               SizedBox(height: 5,),
               MiniPlayer()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  InkWell RecentButton(){
+    return InkWell(
+      onTap: () {
+        showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return FutureBuilder<List<Song>>(
+                future: db.getRecentSongs(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError || !snapshot.hasData) {
+                    return Center(child: Text('Błąd przy pobieraniu ostatnich piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+                  }
+                  else {
+                    List<Song> favouriteSongs = snapshot.data!;
+
+                    if(favouriteSongs.isNotEmpty){
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10,
+                            left: 10,
+                            right: 10
+                        ),
+                        child: Column(
+                          children: [
+                            Text("Ostatnio odtwarzane", style: TextStyle(fontWeight: FontWeight.bold),),
+                            SizedBox(height: 15,),
+                            Expanded(
+                              child: ListView.separated(
+                                itemCount: favouriteSongs.length,
+                                separatorBuilder: (context, index) =>
+                                    Divider(color: Colors.grey.withAlpha(50)),
+                                itemBuilder: (context, index) {
+                                  return SongItem(
+                                    song: favouriteSongs[index],
+                                    customOnTap: (){Navigator.pop(context);},
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    else{
+                      return Center(child: Text('Nic jeszcze nie odtworzyłeś :(', style: TextStyle(fontWeight: FontWeight.bold),));
+                    }
+                  }
+                },
+              );
+            }
+        );
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: Ink(
+        decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(10)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+              top: 10,
+              bottom: 10,
+              left: 20,
+              right: 20
+          ),
+          child: Column(
+            children: [
+              Icon(Icons.access_time_filled, size: 40),
+              Text("Ostatnie")
             ],
           ),
         ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:id3tag/id3tag.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as pth;
@@ -26,6 +27,7 @@ class DbManager{
       databasePath,
       version: 1,
       onCreate: (db,version) async{
+        await db.execute('PRAGMA foreign_keys = ON');
         await db.execute(
           '''CREATE TABLE songs(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,6 +40,13 @@ class DbManager{
             favourite_date NUMERIC
           )'''
         );
+        await db.execute(
+            '''CREATE TABLE recent_songs(
+            id INTEGER PRIMARY KEY,
+            played_date NUMERIC,
+            FOREIGN KEY(id) REFERENCES songs(id)
+          )'''
+        );
       }
     );
 
@@ -45,7 +54,10 @@ class DbManager{
 
   Future<void> saveSongsToDb() async{
     final db = await database;
-    await db.execute("DELETE FROM songs");
+
+    if(kDebugMode){
+      await db.execute("DELETE FROM songs");
+    }
 
     Directory songDirectory = Directory("/storage/emulated/0/Music");
 
@@ -65,7 +77,6 @@ class DbManager{
     String fileType = pth.extension(file.path);
 
     if (fileType == ".mp3" || fileType == ".flac") {
-      Duration? songDuration;
       String? songArtist;
       String? songTitle;
 
@@ -108,7 +119,7 @@ class DbManager{
       songs.add(Song.fromDbMap(songMap));
     }
     return songs;
-}
+  }
 
   Future<Song?> getSongById(int id) async{
     final db = await database;
@@ -145,10 +156,30 @@ class DbManager{
     await db.rawQuery("UPDATE songs SET favourite = ? , favourite_date = ? WHERE id = ?",[favourite ? 1 : 0,DateTime.now().microsecondsSinceEpoch,id]);
   }
 
+  Future<void> addSongToRecent(Song song) async{
+    final db = await database;
+    await db.insert("recent_songs",{'id': song.id, 'played_date': DateTime.now().microsecondsSinceEpoch},conflictAlgorithm: ConflictAlgorithm.replace);
+    var countResult = await db.rawQuery("SELECT COUNT(*) FROM recent_songs");
+    int count = countResult.first.values.first as int;
+    if(count > 20){
+      await db.execute("DELETE FROM recent_songs WHERE played_date = (SELECT MIN(played_date) FROM recent_songs)");
+    }
+  }
+
+  Future<List<Song>> getRecentSongs() async{
+    final db = await database;
+    final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs NATURAL JOIN recent_songs ORDER BY played_date DESC');
+    List<Song> songs = [];
+    for(var songMap in map){
+      songs.add(Song.fromDbMap(songMap));
+    }
+    return songs;
+  }
+
 
   Future<Song?> getSongFromMap(List<Map<String,dynamic>> map) async{
     if(map.isEmpty || map.length > 1) return null;
-    Song song = await Song.fromDbMap(map.first);
+    Song song = Song.fromDbMap(map.first);
     song.duration = await getSongDuration(song.filePath);
     return song;
   }

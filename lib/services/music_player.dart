@@ -29,6 +29,12 @@ class MusicPlayer{
       else await  player.stop();
     });
 
+    currentSong.addListener(() async{
+      if(currentSong.value != null){
+        db.addSongToRecent(currentSong.value!);
+      }
+    });
+
     player.positionStream.listen((position) async{
       if(isPlaying.value){
         if(currentSong.value == null){
