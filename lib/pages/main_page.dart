@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/components/main_page/mini_player.dart';
 import 'package:simple_music_app1/components/main_page/song_item.dart';
+import 'package:simple_music_app1/pages/settings_page.dart';
 
 import '../models/song.dart';
 import '../services/db_manager.dart';
@@ -16,6 +17,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   TextEditingController searchController = TextEditingController();
+  FocusNode searchFocus = FocusNode();
   bool isSearching = false;
   DbManager db = locator<DbManager>();
   List<Song> displayedSongs = [];
@@ -36,6 +38,7 @@ class _MainPageState extends State<MainPage> {
   void displaySearchSongs() async{
     isSearching = true;
     String input = searchController.text;
+    if(input.isEmpty) isSearching = false;
     final newSongs = await db.getSongsByTitleAndAuthor(input);
     setState(() {
       displayedSongs = newSongs;
@@ -46,6 +49,13 @@ class _MainPageState extends State<MainPage> {
   void initState(){
     super.initState();
     displayAllSongs();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    searchFocus.dispose();
+    super.dispose();
   }
 
   //TODO: Zmien guziki żeby ich kod sie nie powtarzał + ustawienia i dodawanie do bazy piosenek ogranij
@@ -65,9 +75,10 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             children: [
               SearchBar(
+                focusNode: searchFocus,
                 controller: searchController,
                 onChanged: (string){displaySearchSongs();},
-                onTapOutside: (event){FocusScope.of(context).unfocus();},
+                onTapOutside: (event){searchFocus.unfocus();},
                 shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                 backgroundColor: WidgetStatePropertyAll(Colors.grey.shade200),
                 leading: Icon(
@@ -79,7 +90,12 @@ class _MainPageState extends State<MainPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SettingsPage()),
+                      );
+                    },
                     borderRadius: BorderRadius.circular(10),
                     child: Ink(
                       decoration: BoxDecoration(
@@ -129,7 +145,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Spacer(),
-                  isSearching ? IconButton(onPressed: (){clearSearch();}, icon: Icon(Icons.search_off)) : Container(),
+                  if(isSearching) IconButton(onPressed: (){clearSearch();}, icon: Icon(Icons.search_off)),
                 ],
               ),
               SizedBox(height: 15,),
@@ -137,7 +153,7 @@ class _MainPageState extends State<MainPage> {
                 child: ListView.separated(
                   cacheExtent: 1200,
                   itemCount: displayedSongs.length,
-                  separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),),
+                  separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
                   itemBuilder: (context,index) {
                     return SongItem(song: displayedSongs[index],);
                   },
@@ -151,6 +167,7 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
 
   InkWell RecentButton(){
     return InkWell(
@@ -171,11 +188,7 @@ class _MainPageState extends State<MainPage> {
 
                     if(favouriteSongs.isNotEmpty){
                       return Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10,
-                            left: 10,
-                            right: 10
-                        ),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                           children: [
                             Text("Ostatnio odtwarzane", style: TextStyle(fontWeight: FontWeight.bold),),
@@ -183,8 +196,7 @@ class _MainPageState extends State<MainPage> {
                             Expanded(
                               child: ListView.separated(
                                 itemCount: favouriteSongs.length,
-                                separatorBuilder: (context, index) =>
-                                    Divider(color: Colors.grey.withAlpha(50)),
+                                separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
                                 itemBuilder: (context, index) {
                                   return SongItem(
                                     song: favouriteSongs[index],
@@ -249,11 +261,7 @@ class _MainPageState extends State<MainPage> {
 
                   if(favouriteSongs.isNotEmpty){
                     return Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 10,
-                          right: 10
-                      ),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
                           Text("Ulubione Piosenki", style: TextStyle(fontWeight: FontWeight.bold),),
@@ -261,8 +269,7 @@ class _MainPageState extends State<MainPage> {
                           Expanded(
                             child: ListView.separated(
                               itemCount: favouriteSongs.length,
-                              separatorBuilder: (context, index) =>
-                                  Divider(color: Colors.grey.withAlpha(50)),
+                              separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
                               itemBuilder: (context, index) {
                                 return SongItem(
                                   song: favouriteSongs[index],

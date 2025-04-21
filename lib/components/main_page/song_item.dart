@@ -26,6 +26,7 @@ class _SongItemState extends State<SongItem> {
     MusicPlayer player = widget.player;
 
     return InkWell(
+      borderRadius: BorderRadius.circular(10),
       onTap: (){
         widget.customOnTap?.call();
         player.playSongById(song.id);
@@ -35,32 +36,39 @@ class _SongItemState extends State<SongItem> {
         );
       },
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 55),
-        child: Row(
-          children: [
-            SongArtImage(key: Key(song.filePath), song: song),
-            SizedBox(width: 10,),
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    song.title ?? pth.basenameWithoutExtension(song.filePath),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    song.author ?? "Nieznany wykonawca",
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey
+        constraints: BoxConstraints(maxHeight: 70),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 3,
+            bottom: 7,
+            top: 7
+          ),
+          child: Row(
+            children: [
+              SongArtImage(key: Key(song.filePath), song: song),
+              SizedBox(width: 10,),
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      song.title ?? pth.basenameWithoutExtension(song.filePath),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  )
-                ],
-              ),
-            )
-          ],
+                    Text(
+                      song.author ?? "Nieznany wykonawca",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
