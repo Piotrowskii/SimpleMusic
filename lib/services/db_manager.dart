@@ -118,6 +118,17 @@ class DbManager{
     return songs;
   }
 
+  Future<List<Song>> getSongsByTitleAndAuthor(String input) async{
+    input = "%$input%";
+    final db = await database;
+    final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs WHERE title LIKE ? OR author LIKE ? ORDER BY modification_date DESC',[input,input]);
+    List<Song> songs = [];
+    for(var songMap in map){
+      songs.add(Song.fromDbMap(songMap));
+    }
+    return songs;
+  }
+
   Future<Song?> getSongById(int id) async{
     final db = await database;
     final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs WHERE id = ?',[id]);

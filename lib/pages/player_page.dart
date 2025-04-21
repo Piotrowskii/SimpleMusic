@@ -16,6 +16,8 @@ class PlayerPage extends StatefulWidget {
   State<PlayerPage> createState() => _PlayerPageState();
 }
 
+//TODO: animatedSwicther tylko na tytule i obrazie
+
 class _PlayerPageState extends State<PlayerPage> {
   MusicPlayer musicPlayer = locator<MusicPlayer>();
 
@@ -33,8 +35,13 @@ class _PlayerPageState extends State<PlayerPage> {
                   builder: (context,song,nonUpdating){
 
                     if(song != null){
-                      return Flexible(
+                      return AnimatedSwitcher(
+                        duration: Duration(milliseconds: 400),
+                        transitionBuilder: (child,animation){
+                          return FadeTransition(opacity: animation, child: child,);
+                        },
                         child: Column(
+                          key: Key(song.id.toString()),
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             SizedBox(
@@ -45,7 +52,6 @@ class _PlayerPageState extends State<PlayerPage> {
                                   child: SongArtImage(key: Key(song.id.toString()),song: song) // jak statefull ma oninit to trzeba key :(
                               )
                             ),
-                            SizedBox(height: 10,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

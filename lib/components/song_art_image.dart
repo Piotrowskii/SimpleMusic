@@ -55,8 +55,8 @@ class _SongArtImageState extends State<SongArtImage> {
 
   @override
   void initState(){
-    super.initState();
     renderImage();
+    super.initState();
   }
 
   @override

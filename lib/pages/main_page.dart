@@ -15,20 +15,37 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  TextEditingController searchController = TextEditingController();
+  bool isSearching = false;
   DbManager db = locator<DbManager>();
-  List<Song> allSongs = [];
+  List<Song> displayedSongs = [];
 
-  void getAllSongs() async{
-    allSongs = await db.getAllSongs();
+  void displayAllSongs() async{
+    final allSongs = await db.getAllSongs();
     setState(() {
+      displayedSongs = allSongs;
+    });
+  }
 
+  void clearSearch() async{
+    isSearching = false;
+    searchController.clear();
+    displayAllSongs();
+  }
+
+  void displaySearchSongs() async{
+    isSearching = true;
+    String input = searchController.text;
+    final newSongs = await db.getSongsByTitleAndAuthor(input);
+    setState(() {
+      displayedSongs = newSongs;
     });
   }
 
   @override
   void initState(){
     super.initState();
-    getAllSongs();
+    displayAllSongs();
   }
 
   //TODO: Zmien guziki żeby ich kod sie nie powtarzał + ustawienia i dodawanie do bazy piosenek ogranij
@@ -48,6 +65,9 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             children: [
               SearchBar(
+                controller: searchController,
+                onChanged: (string){displaySearchSongs();},
+                onTapOutside: (event){FocusScope.of(context).unfocus();},
                 shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                 backgroundColor: WidgetStatePropertyAll(Colors.grey.shade200),
                 leading: Icon(
@@ -109,17 +129,17 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Spacer(),
-                  IconButton(onPressed: (){}, icon: Icon(Icons.filter_alt_outlined)),
+                  isSearching ? IconButton(onPressed: (){clearSearch();}, icon: Icon(Icons.search_off)) : Container(),
                 ],
               ),
               SizedBox(height: 15,),
               Expanded(
                 child: ListView.separated(
                   cacheExtent: 1200,
-                  itemCount: allSongs.length,
+                  itemCount: displayedSongs.length,
                   separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),),
                   itemBuilder: (context,index) {
-                    return SongItem(song: allSongs[index],);
+                    return SongItem(song: displayedSongs[index],);
                   },
                 ),
               ),
