@@ -1,6 +1,5 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
-import 'package:id3tag/id3tag.dart';
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as pth;
 import 'package:path_provider/path_provider.dart';
@@ -55,9 +54,8 @@ class DbManager{
   Future<void> saveSongsToDb() async{
     final db = await database;
 
-    if(kDebugMode){
-      await db.execute("DELETE FROM songs");
-    }
+    await db.execute("DELETE FROM songs");
+    await db.execute("DELETE FROM recent_songs");
 
     Directory songDirectory = Directory("/storage/emulated/0/Music");
 
@@ -76,15 +74,14 @@ class DbManager{
   Future<void> insertSongFromFile(File file,Database db) async {
     String fileType = pth.extension(file.path);
 
-    if (fileType == ".mp3" || fileType == ".flac") {
+    if (fileType == ".mp3" || fileType == ".flac" || fileType == ".ogg" || fileType == ".wav") {
       String? songArtist;
       String? songTitle;
 
       if (fileType == ".mp3") {
-        final parser = ID3TagReader.path(file.path);
-        final tag = parser.readTagSync();
-        songArtist = tag.artist;
-        songTitle = tag.title;
+        final metadata = readMetadata(file);
+        songArtist = metadata.artist;
+        songTitle = metadata.title;
       }
 
       await db.insert(

@@ -31,6 +31,8 @@ class _MainPageState extends State<MainPage> {
     getAllSongs();
   }
 
+  //TODO: Zmien guziki żeby ich kod sie nie powtarzał + ustawienia i dodawanie do bazy piosenek ogranij
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

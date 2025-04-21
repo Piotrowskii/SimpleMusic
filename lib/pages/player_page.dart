@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:path/path.dart' as pth;
 import 'package:flutter/material.dart';
-import 'package:id3tag/id3tag.dart';
 import 'package:simple_music_app1/components/player_page/button_row.dart';
 import 'package:simple_music_app1/components/player_page/music_slider.dart';
 import 'package:simple_music_app1/components/song_art_image.dart';
