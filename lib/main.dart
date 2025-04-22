@@ -11,9 +11,13 @@ void main() async{
   await requestStoragePermission();
   await setup();
   await locator.allReady();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   await startAudioSession(); // Na razie tylko zatrzymuje :(
+
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -23,17 +27,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
-
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.grey,
-          brightness: Brightness.dark,
-        ),
-      ),
-      themeMode: ThemeMode.light,
+      theme: ThemeData(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.dark,
       home: const MainPage(),
     );
   }

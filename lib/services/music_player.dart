@@ -1,6 +1,8 @@
 import 'dart:io' as io;
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as pth;
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:simple_music_app1/enmus/Shuffle.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';

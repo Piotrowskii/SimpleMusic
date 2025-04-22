@@ -16,7 +16,6 @@ class _MusicFolderAlertState extends State<MusicFolderAlert> {
 
   void pickFolder() async{
     String? folder = await FilePicker.platform.getDirectoryPath();
-    print(folder);
     setState(() {
       if(folder != null && folder != "/") folderPathController.text = folder;
     });

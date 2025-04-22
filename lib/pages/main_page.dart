@@ -68,7 +68,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
@@ -85,7 +85,7 @@ class _MainPageState extends State<MainPage> {
                 onChanged: (string){displaySearchSongs();},
                 onTapOutside: (event){searchFocus.unfocus();},
                 shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                backgroundColor: WidgetStatePropertyAll(Colors.grey.shade200),
+                backgroundColor: WidgetStatePropertyAll(Theme.of(context).inputDecorationTheme.fillColor),
                 leading: Icon(
                   Icons.search
                 ),
@@ -104,7 +104,7 @@ class _MainPageState extends State<MainPage> {
                     borderRadius: BorderRadius.circular(10),
                     child: Ink(
                       decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
+                          color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
                           borderRadius: BorderRadius.circular(10)
                       ),
                       child: Padding(
@@ -135,7 +135,7 @@ class _MainPageState extends State<MainPage> {
                     borderRadius: BorderRadius.circular(10),
                     child: Ink(
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
                         borderRadius: BorderRadius.circular(10)
                       ),
                       child: Padding(
@@ -238,7 +238,7 @@ class _MainPageState extends State<MainPage> {
       borderRadius: BorderRadius.circular(10),
       child: Ink(
         decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
             borderRadius: BorderRadius.circular(10)
         ),
         child: Padding(
@@ -311,7 +311,7 @@ class _MainPageState extends State<MainPage> {
       borderRadius: BorderRadius.circular(10),
       child: Ink(
         decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
             borderRadius: BorderRadius.circular(10)
         ),
         child: Padding(
