@@ -81,7 +81,7 @@ class _SongArtImageState extends State<SongArtImage> {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.transparent.withAlpha(10)
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(20)
               ),
               child: Icon(Icons.music_note, size: 30,),
             )

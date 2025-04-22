@@ -18,31 +18,34 @@ class _SettingsPageState extends State<SettingsPage> {
          child: Padding(
            padding: EdgeInsets.all(10),
            child: SingleChildScrollView(
-             child: Column(
-               children: [
-                 InkWell(
-                   onTap: (){
-                     showDialog(context: context,builder: (context){
-                       return MusicFolderAlert();
-                     }
-                     );
-                   },
-                   child: Padding(
-                     padding: const EdgeInsets.only(
-                       top: 10,
-                       bottom: 10
-                     ),
-                     child: Row(
-                       children: [
-                         Icon(Icons.folder),
-                         SizedBox(width: 20,),
-                         Text("Zmień katalog z piosenkami")
-                       ],
+             child: Padding(
+               padding: const EdgeInsets.all(8.0),
+               child: Column(
+                 children: [
+                   InkWell(
+                     onTap: (){
+                       showDialog(context: context,builder: (context){
+                         return MusicFolderAlert();
+                       }
+                       );
+                     },
+                     child: Padding(
+                       padding: const EdgeInsets.only(
+                         top: 10,
+                         bottom: 10
+                       ),
+                       child: Row(
+                         children: [
+                           Icon(Icons.folder),
+                           SizedBox(width: 20,),
+                           Text("Zmień katalog z piosenkami")
+                         ],
+                       ),
                      ),
                    ),
-                 ),
-                 Divider(indent: 20,endIndent: 20,)
-               ],
+                   Divider()
+                 ],
+               ),
              ),
            ),
          ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/components/main_page/mini_player.dart';
 import 'package:simple_music_app1/components/main_page/song_item.dart';
+import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/pages/settings_page.dart';
 
 import '../models/song.dart';
@@ -20,6 +21,7 @@ class _MainPageState extends State<MainPage> {
   FocusNode searchFocus = FocusNode();
   bool isSearching = false;
   DbManager db = locator<DbManager>();
+  MusicPlayer musicPlayer = locator<MusicPlayer>();
   List<Song> displayedSongs = [];
 
   void displayAllSongs() async{
@@ -131,7 +133,13 @@ class _MainPageState extends State<MainPage> {
               Row(
                 children: [
                   InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      musicPlayer.playRandomSong();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PlayerPage())
+                      );
+                    },
                     borderRadius: BorderRadius.circular(10),
                     child: Ink(
                       decoration: BoxDecoration(
