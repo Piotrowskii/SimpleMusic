@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as pth;
 import 'package:path_provider/path_provider.dart';
@@ -7,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../models/song.dart';
 
-class DbManager{
+class DbManager extends ChangeNotifier{
 
   Database? _database;
 
@@ -51,13 +52,13 @@ class DbManager{
 
   }
 
-  Future<void> saveSongsToDb() async{
+  Future<void> saveSongsToDb(String folderPath) async{
     final db = await database;
 
     await db.execute("DELETE FROM songs");
     await db.execute("DELETE FROM recent_songs");
 
-    Directory songDirectory = Directory("/storage/emulated/0/Music");
+    Directory songDirectory = Directory(folderPath);
 
     if(!songDirectory.existsSync()) return;
 
@@ -69,6 +70,7 @@ class DbManager{
         }
     }
 
+    notifyListeners();
   }
 
   Future<void> insertSongFromFile(File file,Database db) async {

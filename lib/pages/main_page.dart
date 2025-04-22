@@ -49,6 +49,11 @@ class _MainPageState extends State<MainPage> {
   void initState(){
     super.initState();
     displayAllSongs();
+
+    db.addListener((){
+      print("hej");
+      displayAllSongs();
+    });
   }
 
   @override
@@ -150,14 +155,7 @@ class _MainPageState extends State<MainPage> {
               ),
               SizedBox(height: 15,),
               Expanded(
-                child: ListView.separated(
-                  cacheExtent: 1200,
-                  itemCount: displayedSongs.length,
-                  separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
-                  itemBuilder: (context,index) {
-                    return SongItem(song: displayedSongs[index],);
-                  },
-                ),
+                child: SongList(),
               ),
               SizedBox(height: 5,),
               MiniPlayer()
@@ -166,6 +164,25 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
     );
+  }
+
+  Widget SongList(){
+    if(displayedSongs.isEmpty && isSearching){
+      return Center(child: Text("Nie znaleziono takiej piosneki"),);
+    }
+    else if(displayedSongs.isEmpty){
+      return Center(child: Text("Lista jest pusta\n\nPrzejdź do ustawień aby zmienić katalog z piosenkami",textAlign: TextAlign.center,));
+    }else{
+      return ListView.separated(
+        cacheExtent: 1200,
+        itemCount: displayedSongs.length,
+        separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
+        itemBuilder: (context,index) {
+          return SongItem(song: displayedSongs[index],);
+        },
+      );
+    }
+
   }
 
 

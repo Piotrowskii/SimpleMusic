@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_music_app1/components/settings_page/music_folder_alert.dart';
+import 'package:simple_music_app1/pages/main_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -15,10 +17,33 @@ class _SettingsPageState extends State<SettingsPage> {
        body: SafeArea(
          child: Padding(
            padding: EdgeInsets.all(10),
-           child: Column(
-             children: [
-
-             ],
+           child: SingleChildScrollView(
+             child: Column(
+               children: [
+                 InkWell(
+                   onTap: (){
+                     showDialog(context: context,builder: (context){
+                       return MusicFolderAlert();
+                     }
+                     );
+                   },
+                   child: Padding(
+                     padding: const EdgeInsets.only(
+                       top: 10,
+                       bottom: 10
+                     ),
+                     child: Row(
+                       children: [
+                         Icon(Icons.folder),
+                         SizedBox(width: 20,),
+                         Text("Zmień katalog z piosenkami")
+                       ],
+                     ),
+                   ),
+                 ),
+                 Divider(indent: 20,endIndent: 20,)
+               ],
+             ),
            ),
          ),
        ),
