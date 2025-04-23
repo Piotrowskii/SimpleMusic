@@ -192,55 +192,115 @@ class _MainPageState extends State<MainPage> {
 
   }
 
+  void showFavouriteSongsModal(BuildContext context){
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return FutureBuilder<List<Song>>(
+            future: db.getFavouriteSongs(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError || !snapshot.hasData) {
+                return Center(child: Text('Błąd przy pobieraniu ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+              }
+              else {
+                List<Song> favouriteSongs = snapshot.data!;
+
+                if(favouriteSongs.isNotEmpty){
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Text("Ulubione Piosenki", style: TextStyle(fontWeight: FontWeight.bold),),
+                        SizedBox(height: 15,),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: favouriteSongs.length,
+                            separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
+                            itemBuilder: (context, index) {
+                              return SongItem(
+                                song: favouriteSongs[index],
+                                customOnTap: (){Navigator.pop(context);},
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                else{
+                  return Center(child: Text('Nie masz ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+                }
+              }
+            },
+          );
+        }
+    );
+  }
+
+  void showRecentSongsModal(BuildContext context){
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return FutureBuilder<List<Song>>(
+            future: db.getRecentSongs(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError || !snapshot.hasData) {
+                return Center(child: Text('Błąd przy pobieraniu ostatnich piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+              }
+              else {
+                List<Song> favouriteSongs = snapshot.data!;
+
+                if(favouriteSongs.isNotEmpty){
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Text("Ostatnio odtwarzane", style: TextStyle(fontWeight: FontWeight.bold),),
+                        SizedBox(height: 15,),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: favouriteSongs.length,
+                            separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
+                            itemBuilder: (context, index) {
+                              return Row(
+                                children: [
+                                  Text((index+1).toString(),style: TextStyle(fontSize: 18),),
+                                  SizedBox(width: 5,),
+                                  Expanded(
+                                    child: SongItem(
+                                      song: favouriteSongs[index],
+                                      customOnTap: (){Navigator.pop(context);},
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                else{
+                  return Center(child: Text('Nic jeszcze nie odtworzyłeś :(', style: TextStyle(fontWeight: FontWeight.bold),));
+                }
+              }
+            },
+          );
+        }
+    );
+  }
+
 
   InkWell RecentButton(){
     return InkWell(
       onTap: () {
-        showModalBottomSheet<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return FutureBuilder<List<Song>>(
-                future: db.getRecentSongs(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError || !snapshot.hasData) {
-                    return Center(child: Text('Błąd przy pobieraniu ostatnich piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
-                  }
-                  else {
-                    List<Song> favouriteSongs = snapshot.data!;
-
-                    if(favouriteSongs.isNotEmpty){
-                      return Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Text("Ostatnio odtwarzane", style: TextStyle(fontWeight: FontWeight.bold),),
-                            SizedBox(height: 15,),
-                            Expanded(
-                              child: ListView.separated(
-                                itemCount: favouriteSongs.length,
-                                separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
-                                itemBuilder: (context, index) {
-                                  return SongItem(
-                                    song: favouriteSongs[index],
-                                    customOnTap: (){Navigator.pop(context);},
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                    else{
-                      return Center(child: Text('Nic jeszcze nie odtworzyłeś :(', style: TextStyle(fontWeight: FontWeight.bold),));
-                    }
-                  }
-                },
-              );
-            }
-        );
+        showRecentSongsModal(context);
       },
       borderRadius: BorderRadius.circular(10),
       child: Ink(
@@ -269,51 +329,7 @@ class _MainPageState extends State<MainPage> {
   InkWell FavouriteButton(){
     return InkWell(
       onTap: () {
-        showModalBottomSheet<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return FutureBuilder<List<Song>>(
-              future: db.getFavouriteSongs(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError || !snapshot.hasData) {
-                  return Center(child: Text('Błąd przy pobieraniu ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
-                }
-                else {
-                  List<Song> favouriteSongs = snapshot.data!;
-
-                  if(favouriteSongs.isNotEmpty){
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Text("Ulubione Piosenki", style: TextStyle(fontWeight: FontWeight.bold),),
-                          SizedBox(height: 15,),
-                          Expanded(
-                            child: ListView.separated(
-                              itemCount: favouriteSongs.length,
-                              separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),
-                              itemBuilder: (context, index) {
-                                return SongItem(
-                                  song: favouriteSongs[index],
-                                  customOnTap: (){Navigator.pop(context);},
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  else{
-                    return Center(child: Text('Nie masz ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
-                  }
-                }
-              },
-            );
-          }
-        );
+        showFavouriteSongsModal(context);
       },
       borderRadius: BorderRadius.circular(10),
       child: Ink(

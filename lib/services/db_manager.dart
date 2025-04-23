@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import '../models/song.dart';
 class DbManager extends ChangeNotifier{
 
   Database? _database;
+  StreamController<(int,int)> streamController = StreamController.broadcast();
 
   Future<Database> get database async{
     if(_database != null) return _database!;
@@ -63,11 +65,20 @@ class DbManager extends ChangeNotifier{
     if(!songDirectory.existsSync()) return;
 
     List<FileSystemEntity> files = songDirectory.listSync();
+    int total = files.length;
+    int counter = 1;
 
     for(var file in files){
       if(file is File){
           await insertSongFromFile(file,db);
+          streamController.add((total, counter));
+          counter++;
+          print(counter);
         }
+    }
+
+    dispose(){
+      streamController.close();
     }
 
     notifyListeners();
@@ -171,7 +182,7 @@ class DbManager extends ChangeNotifier{
     await db.insert("recent_songs",{'id': song.id, 'played_date': DateTime.now().microsecondsSinceEpoch},conflictAlgorithm: ConflictAlgorithm.replace);
     var countResult = await db.rawQuery("SELECT COUNT(*) FROM recent_songs");
     int count = countResult.first.values.first as int;
-    if(count > 20){
+    if(count > 100){
       await db.execute("DELETE FROM recent_songs WHERE played_date = (SELECT MIN(played_date) FROM recent_songs)");
     }
   }

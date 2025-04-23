@@ -55,13 +55,12 @@ class _SongArtImageState extends State<SongArtImage> {
 
   @override
   void initState(){
-    renderImage();
     super.initState();
+    renderImage();
   }
 
   @override
   Widget build(BuildContext context){
-
 
       if(imageList != null){
         return ClipRRect(
@@ -88,9 +87,6 @@ class _SongArtImageState extends State<SongArtImage> {
         );
 
       }
-
-
-
-
   }
+
 }

@@ -47,64 +47,65 @@ class _PlayerPageState extends State<PlayerPage> {
                   builder: (context,song,nonUpdating){
 
                     if(song != null){
-                      return AnimatedSwitcher(
-                        duration: Duration(milliseconds: 400),
-                        transitionBuilder: (child,animation){
-                          return FadeTransition(opacity: animation, child: child,);
-                        },
-                        child: Column(
-                          key: Key(song.id.toString()),
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: 320,
-                              width: 320,
-                              child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: SongArtImage(key: Key(song.id.toString()),song: song) // jak statefull ma oninit to trzeba key :(
-                              )
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AnimatedSwitcher(
+                            duration: Duration(milliseconds: 400),
+                            transitionBuilder: (child,animation){
+                              return FadeTransition(opacity: animation, child: child,);
+                            },
+                            child: Column(
+                              key: Key(song.id.toString()),
                               children: [
-                                Flexible(
-                                  child: Text(
-                                    song.title ?? pth.basenameWithoutExtension(song.filePath),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSurface,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold
-                                    ),
-                                  ),
+                                SizedBox(
+                                    height: 320,
+                                    width: 320,
+                                    child: SongArtImage(key: Key(song.id.toString()),song: song)
                                 ),
-                                IconButton(
-                                  onPressed: (){
-                                    setState(() {
-                                      song.favourite = !song.favourite;
-                                      musicPlayer.changeSongFavourite(song.id, song.favourite);
-                                    });
-                                  },
-                                  icon: Icon(song.favourite ? Icons.star : Icons.star_border, size: 35,)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        song.title ?? pth.basenameWithoutExtension(song.filePath),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Theme.of(context).colorScheme.onSurface,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: (){
+                                          setState(() {
+                                            song.favourite = !song.favourite;
+                                            musicPlayer.changeSongFavourite(song.id, song.favourite);
+                                          });
+                                        },
+                                        icon: Icon(song.favourite ? Icons.star : Icons.star_border, size: 35,)
+                                    )
+                                  ],
                                 )
                               ],
                             ),
-                            SizedBox(height: 5,),
-                            Flexible(
-                              child: Text(
-                                song.author ?? "Nieznany wykonawca",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.grey
-                                ),
+                          ),
+                          SizedBox(height: 5,),
+                          Flexible(
+                            child: Text(
+                              song.author ?? "Nieznany wykonawca",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.grey
                               ),
                             ),
-                            SizedBox(height: 50,),
-                            MusicSlider(songDuration: song.duration ?? Duration.zero),
-                            SizedBox(height: 20,),
-                            ButtonRow(song: song)
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 50,),
+                          MusicSlider(songDuration: song.duration ?? Duration.zero),
+                          SizedBox(height: 20,),
+                          ButtonRow(song: song)
+                        ],
                       );
 
                     }
