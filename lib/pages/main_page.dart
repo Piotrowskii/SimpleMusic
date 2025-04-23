@@ -53,7 +53,6 @@ class _MainPageState extends State<MainPage> {
     displayAllSongs();
 
     db.addListener((){
-      print("hej");
       displayAllSongs();
     });
   }

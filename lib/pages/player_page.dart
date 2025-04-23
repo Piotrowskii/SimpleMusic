@@ -6,6 +6,7 @@ import 'package:simple_music_app1/components/player_page/button_row.dart';
 import 'package:simple_music_app1/components/player_page/music_slider.dart';
 import 'package:simple_music_app1/components/song_art_image.dart';
 import 'package:simple_music_app1/services/music_player.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../models/song.dart';
 import '../services/get_it_register.dart';
 
@@ -108,7 +109,46 @@ class _PlayerPageState extends State<PlayerPage> {
 
                     }
                     else{
-                      return IconButton(onPressed: (){musicPlayer.playRandomSong();}, icon: Icon(Icons.refresh));
+                      return Skeletonizer.zone(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                                height: 320,
+                                width: 320,
+                                child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Bone.square(size: 400,borderRadius: BorderRadius.circular(15),)
+                                )
+                            ),
+                            SizedBox(height:20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Bone.text(),
+                                ),
+                                Bone.circle()
+                              ],
+                            ),
+                            SizedBox(height: 20,),
+                            Flexible(child: Bone.text(),),
+                            SizedBox(height: 70,),
+                            Bone.text(width: 300,),
+                            SizedBox(height: 60,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Bone.circle(size: 50,),
+                                Bone.circle(size: 50,),
+                                Bone.circle(size: 75,),
+                                Bone.circle(size: 50,),
+                                Bone.circle(size: 50,)
+                              ],
+                            ),
+                          ],
+                        )
+                      );
                     }
                   }
               ),
