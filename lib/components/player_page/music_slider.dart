@@ -52,8 +52,10 @@ class _MusicSliderState extends State<MusicSlider> {
           return Column(
             children: [
               Slider(
-                activeColor: Colors.grey,
-                secondaryActiveColor: Colors.grey.shade400,
+                // activeColor: Colors.grey,
+                // secondaryActiveColor: Colors.grey.shade400,
+                activeColor: Theme.of(context).primaryColor,
+                secondaryActiveColor: Theme.of(context).primaryColor.withAlpha(100),
                 value: sliderPercent.clamp(0, 1),
                 secondaryTrackValue: bufferedPercent.clamp(0, 1),
                 onChangeStart: (double x) {

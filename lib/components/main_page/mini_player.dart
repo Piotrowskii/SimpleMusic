@@ -33,8 +33,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
               child: Container(
                 height: 70,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.blueGrey.withAlpha(30)
+                  borderRadius: BorderRadius.circular(15),
+                  //color: Colors.blueGrey.withAlpha(30)
+                  color: Theme.of(context).primaryColor
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -96,8 +97,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
             return Container(
               height: 70,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.blueGrey.withAlpha(30)
+                borderRadius: BorderRadius.circular(15),
+                //color: Colors.blueGrey.withAlpha(30),
+                color: Theme.of(context).primaryColor
               ),
               child: Padding(
                 padding: EdgeInsets.all(8),

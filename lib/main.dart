@@ -23,12 +23,16 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    Color primary = Color.fromARGB(255,58, 89, 209);
+    Color background = Color.fromRGBO(58, 89, 209, 0.1);
+
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white,inputDecorationTheme: InputDecorationTheme(fillColor: Colors.white,iconColor: Colors.white)),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white,primaryColor: primary,inputDecorationTheme: InputDecorationTheme(fillColor: Colors.white,iconColor: Colors.white),appBarTheme: AppBarTheme(backgroundColor: Colors.white)),
+      darkTheme: ThemeData.dark().copyWith(primaryColor: primary),
       themeMode: ThemeMode.dark,
       home: const MainPage(),
     );

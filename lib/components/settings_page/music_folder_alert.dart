@@ -37,7 +37,8 @@ class _MusicFolderAlertState extends State<MusicFolderAlert> {
     else{
 
     }
-    Navigator.pop(context);
+
+    if(context.mounted) Navigator.pop(context);
   }
 
   @override
@@ -48,15 +49,24 @@ class _MusicFolderAlertState extends State<MusicFolderAlert> {
         title: Text(isSaving ? "Zapisywanie" : "Wybierz folder",textAlign: TextAlign.center,style: TextStyle(fontSize: 20,)),
         content: AnimatedSwitcher(
           duration: Duration(milliseconds: 300),
+          transitionBuilder: (child,animation){
+            return ScaleTransition(scale: animation, child: FadeTransition(opacity: animation,child: child,));
+          },
           child: AlertContent(context),
         ),
         actions: <Widget>[
-          if(!isSaving) TextButton(
-            onPressed: (){
-              addSongsToDb(context);
-              },
-            child: Text("Zastosuj"),
-          )
+          if(!isSaving) Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Wyjdź")),
+              TextButton(
+                onPressed: (){
+                  addSongsToDb(context);
+                  },
+                child: Text("Zastosuj"),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -68,7 +78,7 @@ class _MusicFolderAlertState extends State<MusicFolderAlert> {
         stream: db.streamController.stream,
         builder: (context, snapshot) {
           final (total,current) = snapshot.data ?? (0,0);
-          double progress = current/total;
+          double? progress = current/total;
           if(progress.isNaN || progress.isInfinite) progress = 0;
 
           return Column(

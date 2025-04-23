@@ -105,8 +105,9 @@ class _MainPageState extends State<MainPage> {
                     borderRadius: BorderRadius.circular(10),
                     child: Ink(
                       decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
-                          borderRadius: BorderRadius.circular(10)
+                          // color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(10)
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -305,7 +306,7 @@ class _MainPageState extends State<MainPage> {
       borderRadius: BorderRadius.circular(10),
       child: Ink(
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(10)
         ),
         child: Padding(
@@ -334,7 +335,7 @@ class _MainPageState extends State<MainPage> {
       borderRadius: BorderRadius.circular(10),
       child: Ink(
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(10)
         ),
         child: Padding(

@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
                  children: [
                    InkWell(
                      onTap: (){
-                       showDialog(context: context,builder: (context){
+                       showDialog(context: context,barrierDismissible: false,builder: (context){
                          return MusicFolderAlert();
                        }
                        );

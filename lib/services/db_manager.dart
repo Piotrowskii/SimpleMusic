@@ -66,14 +66,13 @@ class DbManager extends ChangeNotifier{
 
     List<FileSystemEntity> files = songDirectory.listSync();
     int total = files.length;
-    int counter = 1;
+    int counter = 0;
 
     for(var file in files){
       if(file is File){
           await insertSongFromFile(file,db);
-          streamController.add((total, counter));
           counter++;
-          print(counter);
+          streamController.add((total, counter));
         }
     }
 

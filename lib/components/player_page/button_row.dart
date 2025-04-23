@@ -18,6 +18,8 @@ class ButtonRow extends StatefulWidget {
 class _ButtonRowState extends State<ButtonRow> {
   MusicPlayer musicPlayer = locator<MusicPlayer>();
 
+  //Colors.grey.shade300
+  //Colors.grey.shade400
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _ButtonRowState extends State<ButtonRow> {
                 onTap: shuffleFunction,
                 customBorder: CircleBorder(),
                 child: Ink(
-                  decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+                  decoration: ShapeDecoration(color: Theme.of(context).primaryColor.withAlpha(180), shape: CircleBorder()),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Icon(schuffleIcon, color: Theme.of(context).canvasColor, size: 25,),
@@ -59,7 +61,7 @@ class _ButtonRowState extends State<ButtonRow> {
           onTap: (){musicPlayer.playPreviousSongButton();},
           customBorder: CircleBorder(),
           child: Ink(
-            decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+            decoration: ShapeDecoration(color: Theme.of(context).primaryColor.withAlpha(180), shape: CircleBorder()),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Icon(Icons.skip_previous, color: Theme.of(context).canvasColor, size: 25,),
@@ -73,7 +75,7 @@ class _ButtonRowState extends State<ButtonRow> {
               onTap: isPlaying ? (){musicPlayer.pauseSongButton();} : (){musicPlayer.resumeSongButton();},
               customBorder: CircleBorder(),
               child: Ink(
-                decoration: ShapeDecoration(color: Colors.grey.shade400, shape: CircleBorder()),
+                decoration: ShapeDecoration(color: Theme.of(context).primaryColor, shape: CircleBorder()),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Icon(isPlaying ? Icons.pause : Icons.play_arrow, color: Theme.of(context).canvasColor, size: 50,),
@@ -86,7 +88,7 @@ class _ButtonRowState extends State<ButtonRow> {
           onTap: (){musicPlayer.playNextSongButton();},
           customBorder: CircleBorder(),
           child: Ink(
-            decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+            decoration: ShapeDecoration(color: Theme.of(context).primaryColor.withAlpha(180), shape: CircleBorder()),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Icon(Icons.skip_next, color: Theme.of(context).canvasColor, size: 25,),
@@ -97,7 +99,7 @@ class _ButtonRowState extends State<ButtonRow> {
           onTap: (){},
           customBorder: CircleBorder(),
           child: Ink(
-            decoration: ShapeDecoration(color: Colors.grey.shade300, shape: CircleBorder()),
+            decoration: ShapeDecoration(color: Theme.of(context).primaryColor.withAlpha(180), shape: CircleBorder()),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Icon(Icons.history, color: Theme.of(context).canvasColor, size: 25,),
