@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
 import 'package:simple_music_app1/services/audio_session_service.dart';
+import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/permission_service.dart';
 
+//TODO ColorService jako instancje klasy nie static bo notifilisners nie działa :(
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +17,7 @@ void main() async{
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await startAudioSession(); // Na razie tylko zatrzymuje :(
+  ColorService.changeTheme(ColorService.isCurrentThemeDark());
 
   runApp(const MyApp());
 
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(scaffoldBackgroundColor: Colors.white,primaryColor: primary,inputDecorationTheme: InputDecorationTheme(fillColor: Colors.white,iconColor: Colors.white),appBarTheme: AppBarTheme(backgroundColor: Colors.white)),
       darkTheme: ThemeData.dark().copyWith(primaryColor: primary),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       home: const MainPage(),
     );
   }

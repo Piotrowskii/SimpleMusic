@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:simple_music_app1/services/color_service.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../models/song.dart';
@@ -80,7 +81,7 @@ class _SongArtImageState extends State<SongArtImage> {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(20)
+                  color: ColorService.artImageBackground
               ),
               child: Icon(Icons.music_note, size: 30,),
             )
