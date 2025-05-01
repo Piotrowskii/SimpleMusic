@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import '../../services/music_player.dart';
+import '../../services/theme_extension.dart';
 
 class MusicSlider extends StatefulWidget {
   final Duration songDuration;
@@ -33,6 +34,8 @@ class _MusicSliderState extends State<MusicSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+
     Duration displayDuration = roudndUpDuration(widget.songDuration);
     int displayDurationSeconds = displayDuration.inSeconds - displayDuration.inMinutes * 60;
 
@@ -54,8 +57,8 @@ class _MusicSliderState extends State<MusicSlider> {
               Slider(
                 // activeColor: Colors.grey,
                 // secondaryActiveColor: Colors.grey.shade400,
-                activeColor: Theme.of(context).primaryColor,
-                secondaryActiveColor: Theme.of(context).primaryColor.withAlpha(100),
+                activeColor: colorExtension.primaryColor,
+                secondaryActiveColor: colorExtension.primaryColor.withAlpha(100),
                 value: sliderPercent.clamp(0, 1),
                 secondaryTrackValue: bufferedPercent.clamp(0, 1),
                 onChangeStart: (double x) {

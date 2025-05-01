@@ -25,6 +25,8 @@ class _SongItemState extends State<SongItem> {
     Song song = widget.song;
     MusicPlayer player = widget.player;
 
+    print("IM FUCKING BULDING !!!!!!!!!");
+
     return InkWell(
       borderRadius: BorderRadius.circular(10),
       onTap: (){

@@ -3,11 +3,14 @@ import 'package:simple_music_app1/components/main_page/mini_player.dart';
 import 'package:simple_music_app1/components/main_page/song_item.dart';
 import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/pages/settings_page.dart';
+import 'package:path/path.dart' as pth;
 
 import '../models/song.dart';
+import '../services/color_service.dart';
 import '../services/db_manager.dart';
 import '../services/get_it_register.dart';
 import '../services/music_player.dart';
+import '../services/theme_extension.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -22,6 +25,7 @@ class _MainPageState extends State<MainPage> {
   bool isSearching = false;
   DbManager db = locator<DbManager>();
   MusicPlayer musicPlayer = locator<MusicPlayer>();
+  ColorService colorService = locator<ColorService>();
   List<Song> displayedSongs = [];
 
   void displayAllSongs() async{
@@ -40,8 +44,28 @@ class _MainPageState extends State<MainPage> {
   void displaySearchSongs() async{
     isSearching = true;
     String input = searchController.text;
-    if(input.isEmpty) isSearching = false;
-    final newSongs = await db.getSongsByTitleAndAuthor(input);
+    if(input.isEmpty){
+      isSearching = false;
+      clearSearch();
+    }
+    // final newSongs = await db.getSongsByTitleAndAuthor(input);
+    final newSongs = displayedSongs.where((e) {
+      bool titleOrNameMatch;
+      bool artistMatch;
+
+      if(e.author != null) artistMatch = e.author!.toLowerCase().contains(input.toLowerCase());
+      else artistMatch = false;
+
+      if(e.title != null){
+        titleOrNameMatch = e.title!.toLowerCase().contains(input.toLowerCase());
+      }
+      else{
+        titleOrNameMatch = pth.basenameWithoutExtension(e.filePath.toLowerCase()).contains(input.toLowerCase());
+      }
+
+      return artistMatch || titleOrNameMatch;
+
+    }).toList();
     setState(() {
       displayedSongs = newSongs;
     });
@@ -68,6 +92,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -106,7 +132,7 @@ class _MainPageState extends State<MainPage> {
                     child: Ink(
                       decoration: BoxDecoration(
                           // color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
-                        color: Theme.of(context).primaryColor,
+                        color: colorExtension.primaryColor ,
                         borderRadius: BorderRadius.circular(10)
                       ),
                       child: Padding(
@@ -125,8 +151,8 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                   ),
-                  RecentButton(),
-                  FavouriteButton()
+                  RecentButton(colorExtension.primaryColor!),
+                  FavouriteButton(colorExtension.primaryColor!)
                 ],
               ),
               SizedBox(height: 30,),
@@ -270,7 +296,7 @@ class _MainPageState extends State<MainPage> {
                             itemBuilder: (context, index) {
                               return Row(
                                 children: [
-                                  Text((index+1).toString(),style: TextStyle(fontSize: 18),),
+                                  SizedBox(width:22,child: Text((index+1).toString(),textAlign: TextAlign.center,style: TextStyle(fontSize: 12),)),
                                   SizedBox(width: 5,),
                                   Expanded(
                                     child: SongItem(
@@ -298,7 +324,7 @@ class _MainPageState extends State<MainPage> {
   }
 
 
-  InkWell RecentButton(){
+  InkWell RecentButton(Color backgroundColor){
     return InkWell(
       onTap: () {
         showRecentSongsModal(context);
@@ -306,7 +332,7 @@ class _MainPageState extends State<MainPage> {
       borderRadius: BorderRadius.circular(10),
       child: Ink(
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(10)
         ),
         child: Padding(
@@ -327,7 +353,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  InkWell FavouriteButton(){
+  InkWell FavouriteButton(Color backgroundColor){
     return InkWell(
       onTap: () {
         showFavouriteSongsModal(context);
@@ -335,7 +361,7 @@ class _MainPageState extends State<MainPage> {
       borderRadius: BorderRadius.circular(10),
       child: Ink(
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(10)
         ),
         child: Padding(

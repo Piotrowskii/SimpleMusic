@@ -6,6 +6,8 @@ import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:simple_music_app1/services/color_service.dart';
+import 'package:simple_music_app1/services/get_it_register.dart';
+import 'package:simple_music_app1/services/theme_extension.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../models/song.dart';
@@ -62,6 +64,7 @@ class _SongArtImageState extends State<SongArtImage> {
 
   @override
   Widget build(BuildContext context){
+    final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
 
       if(imageList != null){
         return ClipRRect(
@@ -81,7 +84,7 @@ class _SongArtImageState extends State<SongArtImage> {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: ColorService.artImageBackground
+                  color: colorExtension.songArtColor
               ),
               child: Icon(Icons.music_note, size: 30,),
             )

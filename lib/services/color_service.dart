@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:simple_music_app1/enmus/current_theme.dart';
 
 class ColorService extends ChangeNotifier{
 
-  static Color primaryAccent = Color.fromARGB(255,58, 89, 209);
-  static Color artImageBackground = Color.fromARGB(255,34,33,38);
-  static bool isDarkTheme = false;
+  Color primaryColor = Color.fromARGB(255,58, 89, 209);
+  Color songArtBackgroundLight = Color.fromARGB(255,236,236,236);
+  Color songArtBackgroundDark = Color.fromARGB(255,34,33,38);
+  CurrentTheme currentTheme = CurrentTheme.blue;
 
-  static void changeColorBasedOnTheme(){
-    if(!isDarkTheme){
-      artImageBackground = Color.fromARGB(255,236,236,236);
+
+  void changeTheme(CurrentTheme theme){
+    switch (theme){
+      case CurrentTheme.blue:
+        primaryColor = Color.fromARGB(255,58, 89, 209);
+      case CurrentTheme.orange:
+        primaryColor = Colors.deepOrange;
+      case CurrentTheme.red:
+        primaryColor = Colors.redAccent;
+      case CurrentTheme.purple:
+        primaryColor = Colors.purpleAccent;
+      case CurrentTheme.green:
+        primaryColor = Colors.greenAccent;
     }
-    else{
-      artImageBackground = Color.fromARGB(255,34,33,38);
-    }
+
+    notifyListeners();
   }
-
-  static bool isCurrentThemeDark(){
-    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-    if(brightness == Brightness.dark) return true;
-    else return false;
-  }
-
-  static void changeTheme(bool dark){
-    if(dark == true) isDarkTheme = true;
-    else isDarkTheme = false;
-    changeColorBasedOnTheme();
-  }
-
-
-
 
 }

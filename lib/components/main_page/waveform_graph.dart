@@ -8,6 +8,7 @@ import 'package:simple_music_app1/services/music_player.dart';
 
 
 import '../../models/song.dart';
+import '../../services/theme_extension.dart';
 
 
 class WaveformGraph extends StatefulWidget {
@@ -49,6 +50,7 @@ class _WaveformGraphState extends State<WaveformGraph> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
     const barWidth = 7.5;
     const spacing = 5.0;
     const maxHeight = 100.0;
@@ -73,7 +75,7 @@ class _WaveformGraphState extends State<WaveformGraph> {
                   width: barWidth,
                   height: value,
                   decoration: BoxDecoration(
-                    color: ColorService.primaryAccent.withAlpha(120),
+                    color: colorExtension.primaryColor!.withAlpha(120),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
