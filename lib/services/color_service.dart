@@ -24,6 +24,10 @@ class ColorService extends ChangeNotifier{
         return Colors.purpleAccent;
       case CurrentTheme.green:
         return Colors.green;
+      case CurrentTheme.HATSUNEMIKU:
+        return Color.fromARGB(255, 57, 197, 187);
+      case CurrentTheme.yellow:
+        return Colors.yellow;
     }
   }
 

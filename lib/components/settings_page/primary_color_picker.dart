@@ -3,6 +3,8 @@ import 'package:simple_music_app1/enmus/current_theme.dart';
 import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
+import '../../services/theme_extension.dart';
+
 class PrimaryColorPicker extends StatefulWidget {
   const PrimaryColorPicker({super.key});
 
@@ -21,6 +23,8 @@ class _PrimaryColorPickerState extends State<PrimaryColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+
     return Column(
       children: [
         Text("Głowny kolor"),
@@ -29,14 +33,14 @@ class _PrimaryColorPickerState extends State<PrimaryColorPicker> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for(CurrentTheme theme in CurrentTheme.values) SingleColor(theme),
+            for(CurrentTheme theme in CurrentTheme.values) SingleColor(theme,colorExtension.oppositeToTheme),
           ],
         )
       ],
     );
   }
 
-  Widget SingleColor(CurrentTheme theme){
+  Widget SingleColor(CurrentTheme theme,Color checkmarkColor){
     Color choosingColor = colorService.getThemePrimaryColor(theme);
     bool isSelected = (colorService.currentTheme == theme);
 
@@ -55,7 +59,7 @@ class _PrimaryColorPickerState extends State<PrimaryColorPicker> {
           border: Border.all(width: 3,color: darkenColor(choosingColor, 0.3)),
           borderRadius: BorderRadius.circular(8)
         ),
-        child: isSelected ? Icon(Icons.check) : SizedBox(),
+        child: isSelected ? Icon(Icons.check,color: checkmarkColor,) : SizedBox(),
       ),
     );
   }

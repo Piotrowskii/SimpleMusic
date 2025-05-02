@@ -44,28 +44,32 @@ class _MainPageState extends State<MainPage> {
   void displaySearchSongs() async{
     isSearching = true;
     String input = searchController.text;
+
     if(input.isEmpty){
       isSearching = false;
       clearSearch();
+      return;
     }
-    // final newSongs = await db.getSongsByTitleAndAuthor(input);
-    final newSongs = displayedSongs.where((e) {
-      bool titleOrNameMatch;
-      bool artistMatch;
+    final newSongs = await db.getSongsByTitleAndAuthor(input);
 
-      if(e.author != null) artistMatch = e.author!.toLowerCase().contains(input.toLowerCase());
-      else artistMatch = false;
+    /* final newSongs = displayedSongs.where((e) {
+    //   bool titleOrNameMatch;
+    //   bool artistMatch;
+    //
+    //   if(e.author != null) artistMatch = e.author!.toLowerCase().contains(input.toLowerCase());
+    //   else artistMatch = false;
+    //
+    //   if(e.title != null){
+    //     titleOrNameMatch = e.title!.toLowerCase().contains(input.toLowerCase());
+    //   }
+    //   else{
+    //     titleOrNameMatch = pth.basenameWithoutExtension(e.filePath.toLowerCase()).contains(input.toLowerCase());
+    //   }
+    //
+    //   return artistMatch || titleOrNameMatch;
+    //
+    // }).toList(); */
 
-      if(e.title != null){
-        titleOrNameMatch = e.title!.toLowerCase().contains(input.toLowerCase());
-      }
-      else{
-        titleOrNameMatch = pth.basenameWithoutExtension(e.filePath.toLowerCase()).contains(input.toLowerCase());
-      }
-
-      return artistMatch || titleOrNameMatch;
-
-    }).toList();
     setState(() {
       displayedSongs = newSongs;
     });
@@ -144,7 +148,7 @@ class _MainPageState extends State<MainPage> {
                         ),
                         child: Column(
                           children: [
-                            Icon(Icons.settings, size: 40),
+                            Icon(Icons.settings_outlined, size: 40),
                             Text("Ustawienia")
                           ],
                         ),
@@ -344,7 +348,7 @@ class _MainPageState extends State<MainPage> {
           ),
           child: Column(
             children: [
-              Icon(Icons.access_time_filled, size: 40),
+              Icon(Icons.access_time_outlined, size: 40),
               Text("Ostatnie")
             ],
           ),

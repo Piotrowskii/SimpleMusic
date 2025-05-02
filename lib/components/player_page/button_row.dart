@@ -49,9 +49,9 @@ class _ButtonRowState extends State<ButtonRow> {
 
               return InkWell(
                 onTap: shuffleFunction,
-                customBorder: CircleBorder(),
+                customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: Ink(
-                  decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: CircleBorder()),
+                  decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Icon(schuffleIcon, color: Theme.of(context).canvasColor, size: 25,),
@@ -62,9 +62,9 @@ class _ButtonRowState extends State<ButtonRow> {
         ),
         InkWell(
           onTap: (){musicPlayer.playPreviousSongButton();},
-          customBorder: CircleBorder(),
+          customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Ink(
-            decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: CircleBorder()),
+            decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Icon(Icons.skip_previous, color: Theme.of(context).canvasColor, size: 25,),
@@ -89,9 +89,9 @@ class _ButtonRowState extends State<ButtonRow> {
         ),
         InkWell(
           onTap: (){musicPlayer.playNextSongButton();},
-          customBorder: CircleBorder(),
+          customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Ink(
-            decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: CircleBorder()),
+            decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Icon(Icons.skip_next, color: Theme.of(context).canvasColor, size: 25,),
@@ -100,9 +100,9 @@ class _ButtonRowState extends State<ButtonRow> {
         ),
         InkWell(
           onTap: (){},
-          customBorder: CircleBorder(),
+          customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Ink(
-            decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: CircleBorder()),
+            decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Icon(Icons.history, color: Theme.of(context).canvasColor, size: 25,),

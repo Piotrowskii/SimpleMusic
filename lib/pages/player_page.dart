@@ -101,9 +101,9 @@ class _PlayerPageState extends State<PlayerPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 50,),
+                          SizedBox(height: 60,),
                           MusicSlider(songDuration: song.duration ?? Duration.zero),
-                          SizedBox(height: 20,),
+                          SizedBox(height: 30,),
                           ButtonRow(song: song)
                         ],
                       );
@@ -140,11 +140,11 @@ class _PlayerPageState extends State<PlayerPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Bone.circle(size: 50,),
-                                Bone.circle(size: 50,),
-                                Bone.circle(size: 75,),
-                                Bone.circle(size: 50,),
-                                Bone.circle(size: 50,)
+                                Bone.square(size: 50,borderRadius: BorderRadius.circular(10)),
+                                Bone.square(size: 50,borderRadius: BorderRadius.circular(10)),
+                                Bone.circle(size: 75),
+                                Bone.square(size: 50,borderRadius: BorderRadius.circular(10)),
+                                Bone.square(size: 50,borderRadius: BorderRadius.circular(10)),
                               ],
                             ),
                           ],

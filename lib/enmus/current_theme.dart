@@ -3,5 +3,7 @@ enum CurrentTheme{
   orange,
   red,
   purple,
-  green
+  green,
+  yellow,
+  HATSUNEMIKU
 }

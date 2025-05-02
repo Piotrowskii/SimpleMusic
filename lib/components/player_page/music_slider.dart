@@ -54,29 +54,39 @@ class _MusicSliderState extends State<MusicSlider> {
 
           return Column(
             children: [
-              Slider(
-                // activeColor: Colors.grey,
-                // secondaryActiveColor: Colors.grey.shade400,
-                activeColor: colorExtension.primaryColor,
-                secondaryActiveColor: colorExtension.primaryColor.withAlpha(100),
-                value: sliderPercent.clamp(0, 1),
-                secondaryTrackValue: bufferedPercent.clamp(0, 1),
-                onChangeStart: (double x) {
-                  setState(() {
-                    changing = true;
-                  });
-                },
-                onChangeEnd: (double x) {
-                  setState(() {
-                    musicPlayer.player.seek(Duration(milliseconds: (widget.songDuration.inMilliseconds * x).toInt()));
-                    changing = false;
-                  });
-                },
-                onChanged: (double x) {
-                  setState(() {
-                    sliderPercent = x;
-                  });
-                }
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  trackHeight: 12,
+                ),
+                child: Slider(
+                  padding: EdgeInsets.only(
+                    right: 5,
+                    left: 5,
+                    bottom: 5
+                  ),
+                  // activeColor: Colors.grey,
+                  // secondaryActiveColor: Colors.grey.shade400,
+                  activeColor: colorExtension.primaryColor,
+                  secondaryActiveColor: colorExtension.primaryColor.withAlpha(100),
+                  value: sliderPercent.clamp(0, 1),
+                  secondaryTrackValue: bufferedPercent.clamp(0, 1),
+                  onChangeStart: (double x) {
+                    setState(() {
+                      changing = true;
+                    });
+                  },
+                  onChangeEnd: (double x) {
+                    setState(() {
+                      musicPlayer.player.seek(Duration(milliseconds: (widget.songDuration.inMilliseconds * x).toInt()));
+                      changing = false;
+                    });
+                  },
+                  onChanged: (double x) {
+                    setState(() {
+                      sliderPercent = x;
+                    });
+                  }
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
