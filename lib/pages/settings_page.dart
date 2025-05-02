@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/components/settings_page/music_folder_alert.dart';
+import 'package:simple_music_app1/components/settings_page/primary_color_picker.dart';
+import 'package:simple_music_app1/components/settings_page/system_theme_picker.dart';
 import 'package:simple_music_app1/enmus/current_theme.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
 import 'package:simple_music_app1/services/color_service.dart';
@@ -50,7 +52,9 @@ class _SettingsPageState extends State<SettingsPage> {
                      ),
                    ),
                    Divider(),
-                   IconButton(onPressed: (){colorService.changeTheme(CurrentTheme.blue);}, icon: Icon(Icons.adb))
+                   SystemThemePicker(),
+                   Divider(),
+                   PrimaryColorPicker(),
                  ],
                ),
              ),

@@ -41,15 +41,23 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(scaffoldBackgroundColor: Colors.white,inputDecorationTheme: InputDecorationTheme(fillColor: Colors.white,iconColor: Colors.white),appBarTheme: AppBarTheme(backgroundColor: Colors.white)).copyWith(
             extensions: <ThemeExtension<dynamic>>[
-              ColorExtension(primaryColor: colorService.primaryColor, songArtColor: colorService.songArtBackgroundLight)
+              ColorExtension(
+                primaryColor: colorService.primaryColor,
+                songArtColor: colorService.songArtBackgroundLight,
+                oppositeToTheme: Colors.black
+              )
             ]
           ),
           darkTheme: ThemeData.dark().copyWith(
             extensions: <ThemeExtension<dynamic>>[
-              ColorExtension(primaryColor: colorService.primaryColor, songArtColor: colorService.songArtBackgroundDark)
+              ColorExtension(
+                primaryColor: colorService.primaryColor,
+                songArtColor: colorService.songArtBackgroundDark,
+                oppositeToTheme: Colors.white
+              )
             ]
           ),
-          themeMode: ThemeMode.dark,
+          themeMode: colorService.currentThemeMode,
           home: const MainPage(),
         );
       },

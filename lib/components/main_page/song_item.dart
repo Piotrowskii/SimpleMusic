@@ -4,6 +4,7 @@ import 'package:path/path.dart' as pth;
 import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/music_player.dart';
+import 'package:simple_music_app1/services/theme_extension.dart';
 
 import '../../models/song.dart';
 
@@ -20,12 +21,13 @@ class SongItem extends StatefulWidget {
 
 class _SongItemState extends State<SongItem> {
 
+
   @override
   Widget build(BuildContext context) {
+    ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+
     Song song = widget.song;
     MusicPlayer player = widget.player;
-
-    print("IM FUCKING BULDING !!!!!!!!!");
 
     return InkWell(
       borderRadius: BorderRadius.circular(10),
@@ -57,6 +59,7 @@ class _SongItemState extends State<SongItem> {
                     Text(
                       song.title ?? pth.basenameWithoutExtension(song.filePath),
                       overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: colorExtension.primaryColor),
                     ),
                     Text(
                       song.author ?? "Nieznany wykonawca",
