@@ -1,5 +1,6 @@
 package com.example.simple_music_app1
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -46,6 +48,7 @@ class MainActivity : FlutterActivity(){
             notificationManager.createNotificationChannel(channel)
             channel.setSound(null, null)
             channel.enableVibration(false)
+            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }
 
         val previousIntent = Intent(this, NotificationActionReceiver::class.java).apply {
@@ -69,21 +72,26 @@ class MainActivity : FlutterActivity(){
         val playPauseIcon = if (isPlaying) android.R.drawable.ic_media_pause else android.R.drawable.ic_media_play
         val correctIntent = if (isPlaying) pausePendingIntent else playPendingIntent
 
+        val mediaSession = MediaSessionCompat(this, "MediaSessionTag")
+
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
             .setContentText(artist)
             .setSmallIcon(android.R.drawable.ic_media_play)
             .setColor(Color.parseColor(color))
             .setOngoing(true)
+            .setColorized(true)
             .setOnlyAlertOnce(true)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) // show on lockscreen
             .addAction(android.R.drawable.ic_media_previous, "Poprzednia", previousPendingIntent)
             .addAction(playPauseIcon, "Start/Stop", correctIntent)
             .addAction(android.R.drawable.ic_media_next, "Następna", nextPendingIntent)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setShowActionsInCompactView(0, 1, 2)
+                    .setMediaSession(mediaSession.sessionToken) // 👈 Required
             )
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_LOW) // LOW or DEFAULT is okay for ongoing
             .build()
 
         notificationManager.notify(0, notification)
