@@ -3,7 +3,7 @@ import 'package:simple_music_app1/enmus/current_theme.dart';
 import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
-import '../../services/theme_extension.dart';
+import '../../services/color_theme_extension.dart';
 
 class PrimaryColorPicker extends StatefulWidget {
   const PrimaryColorPicker({super.key});

@@ -4,7 +4,7 @@ import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 
 import '../../models/song.dart';
-import '../../services/theme_extension.dart';
+import '../../services/color_theme_extension.dart';
 
 class ButtonRow extends StatefulWidget {
   final Song? song;

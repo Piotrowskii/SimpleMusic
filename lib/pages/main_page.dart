@@ -3,14 +3,13 @@ import 'package:simple_music_app1/components/main_page/mini_player.dart';
 import 'package:simple_music_app1/components/main_page/song_item.dart';
 import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/pages/settings_page.dart';
-import 'package:path/path.dart' as pth;
 
 import '../models/song.dart';
 import '../services/color_service.dart';
 import '../services/db_manager.dart';
 import '../services/get_it_register.dart';
 import '../services/music_player.dart';
-import '../services/theme_extension.dart';
+import '../services/color_theme_extension.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -155,8 +154,8 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                   ),
-                  RecentButton(colorExtension.primaryColor!),
-                  FavouriteButton(colorExtension.primaryColor!)
+                  RecentButton(colorExtension.primaryColor),
+                  FavouriteButton(colorExtension.primaryColor)
                 ],
               ),
               SizedBox(height: 30,),

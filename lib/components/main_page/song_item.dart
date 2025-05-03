@@ -4,7 +4,7 @@ import 'package:path/path.dart' as pth;
 import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/music_player.dart';
-import 'package:simple_music_app1/services/theme_extension.dart';
+import 'package:simple_music_app1/services/color_theme_extension.dart';
 
 import '../../models/song.dart';
 

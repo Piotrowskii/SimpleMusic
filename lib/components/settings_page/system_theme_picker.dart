@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
-import 'package:simple_music_app1/services/theme_extension.dart';
+import 'package:simple_music_app1/services/color_theme_extension.dart';
 
 class SystemThemePicker extends StatefulWidget {
   const SystemThemePicker({super.key});

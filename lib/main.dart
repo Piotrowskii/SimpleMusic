@@ -5,7 +5,7 @@ import 'package:simple_music_app1/services/audio_session_service.dart';
 import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/permission_service.dart';
-import 'package:simple_music_app1/services/theme_extension.dart';
+import 'package:simple_music_app1/services/color_theme_extension.dart';
 
 //TODO ColorService jako instancje klasy nie static bo notifilisners nie działa :(
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import '../../services/music_player.dart';
-import '../../services/theme_extension.dart';
+import '../../services/color_theme_extension.dart';
 
 class MusicSlider extends StatefulWidget {
   final Duration songDuration;

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_music_app1/components/player_page/button_row.dart';
 import 'package:simple_music_app1/components/player_page/music_slider.dart';
 import 'package:simple_music_app1/components/song_art_image.dart';
+import 'package:simple_music_app1/services/color_theme_extension.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../models/song.dart';
@@ -34,6 +35,8 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
@@ -71,7 +74,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                         song.title ?? pth.basenameWithoutExtension(song.filePath),
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            color: Theme.of(context).colorScheme.onSurface,
+                                            color: colorExtension.primaryColor,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold
                                         ),

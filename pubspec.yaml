@@ -45,7 +45,7 @@ dependencies:
   skeletonizer: ^1.4.3
   audio_metadata_reader: ^1.4.0
   file_picker: ^9.2.3
-  just_audio_background: ^0.0.1-beta.16
+  flutter_local_notifications: ^19.1.0
 
 
 dev_dependencies:
