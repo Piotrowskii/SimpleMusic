@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:simple_music_app1/enmus/current_theme.dart';
+import 'package:simple_music_app1/services/push_notification_service.dart';
 
 class ColorService extends ChangeNotifier{
 
@@ -34,6 +35,7 @@ class ColorService extends ChangeNotifier{
   void changeTheme(CurrentTheme theme){
     primaryColor = getThemePrimaryColor(theme);
     currentTheme = theme;
+    PushNotificationService.changeCurrentColor(primaryColor);
     notifyListeners();
   }
 

@@ -1,9 +1,11 @@
 import 'dart:io' as io;
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as pth;
 import 'package:just_audio/just_audio.dart';
 import 'package:simple_music_app1/enmus/Shuffle.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
+import 'package:simple_music_app1/services/push_notification_service.dart';
 
 import '../models/song.dart';
 
@@ -24,6 +26,8 @@ class MusicPlayer{
         if(song == null) return;
         playSong(song);
       }
+      
+      PushNotificationService.changeNotificationPlaying(isPlaying.value);
 
       if(isPlaying.value) player.play();
       else await  player.stop();
@@ -32,6 +36,10 @@ class MusicPlayer{
     currentSong.addListener(() async{
       if(currentSong.value != null){
         db.addSongToRecent(currentSong.value!);
+
+        Song song = currentSong.value!;
+
+        PushNotificationService.showNotification(song.title ?? pth.basenameWithoutExtension(song.filePath), song.author ?? "Nieznany artysta");
       }
     });
 
@@ -45,6 +53,13 @@ class MusicPlayer{
         }
       }
     });
+
+    PushNotificationService.listenToButtonPresses(
+      previousFunction: playPreviousSongButton,
+      playFunction: resumeSongButton,
+      pauseFunction: pauseSongButton,
+      nextFunction: playNextSongButton
+    );
   }
 
 

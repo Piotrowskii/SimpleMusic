@@ -11,6 +11,8 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
+        <receiver android:name=".NotificationActionReceiver" android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -10,16 +10,17 @@ import 'package:simple_music_app1/services/push_notification_service.dart';
 
 //TODO ColorService jako instancje klasy nie static bo notifilisners nie działa :(
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await requestStoragePermission();
   await setup();
   await locator.allReady();
 
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await startAudioSession(); // Na razie tylko zatrzymuje :(
-
 
   runApp(const MyApp());
 
