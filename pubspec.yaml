@@ -45,7 +45,8 @@ dependencies:
   skeletonizer: ^1.4.3
   audio_metadata_reader: ^1.4.0
   file_picker: ^9.2.3
-  flutter_local_notifications: ^19.1.0
+  pigeon: ^25.3.1
+
 
 
 dev_dependencies:

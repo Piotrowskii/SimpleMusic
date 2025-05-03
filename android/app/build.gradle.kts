@@ -37,6 +37,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
     }
 
     signingConfigs {
@@ -54,6 +55,7 @@ android {
             // so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
             signingConfig = signingConfigs.getByName("release")
+
         }
     }
 }
