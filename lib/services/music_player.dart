@@ -1,11 +1,9 @@
 import 'dart:io' as io;
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as pth;
 import 'package:just_audio/just_audio.dart';
 import 'package:simple_music_app1/enmus/Shuffle.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
-import 'package:simple_music_app1/services/push_notification_service.dart';
 
 import '../models/song.dart';
 
@@ -20,12 +18,15 @@ class MusicPlayer{
   //TODO: przecowywać długośc piosenki w bazie
 
   MusicPlayer(){
+
+
     isPlaying.addListener(() async{
       if(currentSong.value == null){
         Song? song = await db.getFirstSong();
         if(song == null) return;
         playSong(song);
       }
+
 
       if(isPlaying.value) player.play();
       else await  player.stop();
@@ -35,7 +36,6 @@ class MusicPlayer{
       if(currentSong.value != null){
         db.addSongToRecent(currentSong.value!);
 
-        Song song = currentSong.value!;
       }
     });
 
@@ -47,6 +47,17 @@ class MusicPlayer{
         if(position >= currentSong.value!.duration!){
           await automaticlyPlayNextSong();
         }
+      }
+    });
+
+    db.addListener((){
+      if(currentSong.value != null){
+        Future.delayed(Duration.zero, () async {
+          final isInDb = await db.doesSongExist(currentSong.value!.filePath);
+          if(!isInDb){
+            currentSong.value = null;
+          }
+        });
       }
     });
 

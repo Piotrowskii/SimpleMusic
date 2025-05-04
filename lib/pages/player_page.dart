@@ -21,16 +21,6 @@ class PlayerPage extends StatefulWidget {
 //TODO: animatedSwicther tylko na tytule i obrazie
 
 class _PlayerPageState extends State<PlayerPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    final ThemeData lightTheme = ThemeData.light(); // Default light theme
-
-    print(lightTheme.scaffoldBackgroundColor);  // This might show a very light color, close to white
-
-  }
-
   MusicPlayer musicPlayer = locator<MusicPlayer>();
 
   @override

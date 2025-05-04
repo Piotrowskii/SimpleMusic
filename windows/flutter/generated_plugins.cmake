@@ -3,8 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audiotags
-  awesome_notifications
   permission_handler_windows
 )
 

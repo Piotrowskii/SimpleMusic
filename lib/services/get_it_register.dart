@@ -10,9 +10,11 @@ final locator = GetIt.instance;
 Future<void> setup() async{
   DbManager dbManager = DbManager();
   await dbManager.initDatabase();
+  await dbManager.updateSongDbWithoutDeleting();
   locator.registerSingleton<DbManager>(dbManager);
 
   ColorService colorService = ColorService();
+  await colorService.initializeWithDb();
   locator.registerSingleton<ColorService>(colorService);
 
   // PushNotificationService pushNotificationService = PushNotificationService();

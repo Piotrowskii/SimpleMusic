@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
@@ -7,14 +6,13 @@ import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/permission_service.dart';
 import 'package:simple_music_app1/services/color_theme_extension.dart';
-import 'package:simple_music_app1/services/push_notification_service.dart';
 
-//TODO ColorService jako instancje klasy nie static bo notifilisners nie działa :(
+
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await requestStoragePermission();
+  await PermissionService.requestStoragePermission();
   await setup();
   await locator.allReady();
 
@@ -37,6 +35,9 @@ class MyApp extends StatelessWidget {
     Color primary = Color.fromARGB(255,58, 89, 209);
     Color background = Color.fromRGBO(58, 89, 209, 0.1);
     ColorService colorService = locator<ColorService>();
+
+
+
 
     return ListenableBuilder(
       listenable: colorService,

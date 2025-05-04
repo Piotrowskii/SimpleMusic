@@ -1,18 +1,29 @@
 import 'package:permission_handler/permission_handler.dart';
 
-Future<void> requestStoragePermission() async {
-  var status = await Permission.storage.request();
-  if (status.isGranted) {
-    //print("Dostęp do pamięci przyznany!");
-  } else {
-    //print("Brak uprawnień do pamięci!");
+class PermissionService{
+
+  static Future<bool> requestStoragePermission() async {
+
+    try{
+      var test = await Permission.storage.status;
+      bool success = true;
+
+      if(!test.isGranted){
+        final status = await Permission.storage.request();
+        if(!status.isGranted){
+          success = false;
+        }
+      }
+      return success;
+    }
+    catch(e){
+      return false;
+    }
+
   }
-  
-  if (await Permission.manageExternalStorage.isGranted) {
-    //print("Pełny dostęp do pamięci przyznany!");
-  } else {
-    //print("Prośba o pełny dostęp...");
-    await Permission.manageExternalStorage.request();
-  }
+
+
 }
+
+
 

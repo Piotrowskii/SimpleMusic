@@ -43,10 +43,10 @@ dependencies:
   path: ^1.9.1
   audio_session: ^0.1.25
   skeletonizer: ^1.4.3
-  #audio_metadata_reader: ^1.4.1
   file_picker: ^9.2.3
-  awesome_notifications: ^0.10.1
-  audiotags: ^1.4.5
+  #awesome_notifications: ^0.10.0
+  #audiotags: ^1.4.5
+  audio_metadata_reader: ^1.4.1
 
 
 

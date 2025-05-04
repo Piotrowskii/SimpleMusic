@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
+import '../../services/permission_service.dart';
+
 class MusicFolderAlert extends StatefulWidget {
   const MusicFolderAlert({super.key});
 
@@ -39,6 +41,20 @@ class _MusicFolderAlertState extends State<MusicFolderAlert> {
     }
 
     if(context.mounted) Navigator.pop(context);
+  }
+
+  Future<void> checkIfHasPermissions() async{
+    if(await PermissionService.requestStoragePermission() == false){
+      if(context.mounted){
+        Navigator.pop(context);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfHasPermissions();
   }
 
   @override

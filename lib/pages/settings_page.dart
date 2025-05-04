@@ -6,6 +6,7 @@ import 'package:simple_music_app1/components/settings_page/system_theme_picker.d
 import 'package:simple_music_app1/enmus/current_theme.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
 import 'package:simple_music_app1/services/color_service.dart';
+import 'package:simple_music_app1/services/permission_service.dart';
 import 'package:simple_music_app1/services/push_notification_service.dart';
 
 import '../services/get_it_register.dart';

@@ -18,14 +18,18 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage>{
   TextEditingController searchController = TextEditingController();
   FocusNode searchFocus = FocusNode();
   bool isSearching = false;
+  bool isInitialized = false;
+  bool isRefreshing = false;
   DbManager db = locator<DbManager>();
   MusicPlayer musicPlayer = locator<MusicPlayer>();
   ColorService colorService = locator<ColorService>();
   List<Song> displayedSongs = [];
+
+
 
   void displayAllSongs() async{
     final allSongs = await db.getAllSongs();
@@ -40,6 +44,22 @@ class _MainPageState extends State<MainPage> {
     displayAllSongs();
   }
 
+  void checkIfInitialized() async{
+    isInitialized = await db.getIsInitialized();
+    setState(() {});
+  }
+
+  void refreshSongListButton() async{
+    if(isRefreshing) return;
+    setState(() {
+      isRefreshing = true;
+    });
+    await db.updateSongDbWithoutDeleting();
+    setState(() {
+      isRefreshing = false;
+    });
+  }
+
   void displaySearchSongs() async{
     isSearching = true;
     String input = searchController.text;
@@ -51,24 +71,6 @@ class _MainPageState extends State<MainPage> {
     }
     final newSongs = await db.getSongsByTitleAndAuthor(input);
 
-    /* final newSongs = displayedSongs.where((e) {
-    //   bool titleOrNameMatch;
-    //   bool artistMatch;
-    //
-    //   if(e.author != null) artistMatch = e.author!.toLowerCase().contains(input.toLowerCase());
-    //   else artistMatch = false;
-    //
-    //   if(e.title != null){
-    //     titleOrNameMatch = e.title!.toLowerCase().contains(input.toLowerCase());
-    //   }
-    //   else{
-    //     titleOrNameMatch = pth.basenameWithoutExtension(e.filePath.toLowerCase()).contains(input.toLowerCase());
-    //   }
-    //
-    //   return artistMatch || titleOrNameMatch;
-    //
-    // }).toList(); */
-
     setState(() {
       displayedSongs = newSongs;
     });
@@ -77,12 +79,18 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState(){
     super.initState();
+
+
+    checkIfInitialized();
     displayAllSongs();
 
     db.addListener((){
+      checkIfInitialized();
       displayAllSongs();
     });
   }
+
+
 
   @override
   void dispose() {
@@ -188,6 +196,14 @@ class _MainPageState extends State<MainPage> {
                   ),
                   Spacer(),
                   if(isSearching) IconButton(onPressed: (){clearSearch();}, icon: Icon(Icons.search_off)),
+                  isRefreshing ?
+                  Icon(Icons.hourglass_bottom)
+                  :
+                  IconButton(
+                      onPressed: () async{refreshSongListButton();},
+                      icon: Icon(Icons.refresh)
+                  )
+
                 ],
               ),
               SizedBox(height: 15,),
@@ -207,8 +223,11 @@ class _MainPageState extends State<MainPage> {
     if(displayedSongs.isEmpty && isSearching){
       return Center(child: Text("Nie znaleziono takiej piosneki"),);
     }
+    else if(!isInitialized){
+      return Center(child: Text("Musisz ustawic katalog z piosenkami w opcjach"),);
+    }
     else if(displayedSongs.isEmpty){
-      return Center(child: Text("Lista jest pusta\n\nPrzejdź do ustawień aby zmienić katalog z piosenkami",textAlign: TextAlign.center,));
+      return Center(child: Text("Aktualnie wybrany katalog jest pusty możesz wybrać inny w opcjach",textAlign: TextAlign.center,));
     }else{
       return ListView.separated(
         cacheExtent: 1200,

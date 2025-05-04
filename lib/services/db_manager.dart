@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:audiotags/audiotags.dart';
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as pth;
 import 'package:path_provider/path_provider.dart';
+import 'package:simple_music_app1/enmus/current_theme.dart';
+import 'package:simple_music_app1/services/permission_service.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/song.dart';
@@ -32,8 +35,8 @@ class DbManager extends ChangeNotifier{
         await db.execute('PRAGMA foreign_keys = ON');
         await db.execute(
           '''CREATE TABLE songs(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            path TEXT,
+            id INTEGER PRIMARY KEY,
+            path TEXT UNIQUE,
             title TEXT,
             favourite INTEGER,
             show_cover INTEGER,
@@ -46,9 +49,19 @@ class DbManager extends ChangeNotifier{
             '''CREATE TABLE recent_songs(
             id INTEGER PRIMARY KEY,
             played_date NUMERIC,
-            FOREIGN KEY(id) REFERENCES songs(id)
+            FOREIGN KEY(id) REFERENCES songs(id) ON DELETE CASCADE
           )'''
         );
+        await db.execute(
+            '''CREATE TABLE settings(
+            id INTEGER PRIMARY KEY,
+            is_initialized NUMERIC,
+            song_directory TEXT,
+            current_system_theme TEXT,
+            current_theme TEXT
+          )'''
+        );
+        await db.rawInsert("INSERT INTO settings (id, is_initialized, song_directory, current_system_theme, current_theme) VALUES (?, ?, ?, ?, ?)", [1, 0, null, 'system', 'blue']);
       }
     );
 
@@ -63,8 +76,10 @@ class DbManager extends ChangeNotifier{
     Directory songDirectory = Directory(folderPath);
 
     if(!songDirectory.existsSync()) return;
+    setIsInitialized(true);
+    setSongDirectory(songDirectory.path);
 
-    List<FileSystemEntity> files = songDirectory.listSync();
+    List<FileSystemEntity> files = songDirectory.listSync(recursive: true);
     int total = files.length;
     int counter = 0;
 
@@ -83,18 +98,66 @@ class DbManager extends ChangeNotifier{
     notifyListeners();
   }
 
+  Future<void> updateSongDbWithoutDeleting() async{
+    final db = await database;
+
+    String? songDirectoryString = await getSongDirectory();
+    if(songDirectoryString == null) return;
+    if(!Directory(songDirectoryString).existsSync()) return;
+    await deleteMissingSongs();
+
+    List<FileSystemEntity> files = Directory(songDirectoryString).listSync(recursive: true);
+
+
+    for (final file in files) {
+      if(file is File){
+        final path = file.path;
+
+        final existing = await db.rawQuery(
+          'SELECT id FROM songs WHERE path = ?',
+          [path],
+        );
+
+        if (existing.isEmpty) {
+          await insertSongFromFile(file, db);
+        }
+      }
+
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> deleteMissingSongs() async {
+    final db = await database;
+    final songs = await db.rawQuery('SELECT id, path FROM songs');
+
+    for (final song in songs) {
+      final id = song['id'] as int;
+      final path = song['path'] as String;
+
+      if (!File(path).existsSync()) {
+        await db.rawDelete('DELETE FROM songs WHERE id = ?', [id]);
+      }
+    }
+  }
+
+  Future<bool> doesSongExist(String path) async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT COUNT(*) FROM songs WHERE path = ?', [path],);
+    return (result.first['COUNT(*)'] as int) > 0;
+  }
+
   Future<void> insertSongFromFile(File file,Database db) async {
-    String fileType = pth.extension(file.path);
+    String fileType = pth.extension(file.path).toLowerCase();
 
     if (fileType == ".mp3" || fileType == ".flac" || fileType == ".ogg" || fileType == ".wav") {
       String? songArtist;
       String? songTitle;
 
-      Tag? tag = await AudioTags.read(file.path);
-      if(tag != null){
-        songTitle = tag.title;
-        songArtist = tag.trackArtist ?? tag.albumArtist;
-      }
+      final metadata = readMetadata(file,getImage: false);
+      songTitle = metadata.title;
+      songArtist = metadata.artist;
 
       await db.insert(
           'songs',
@@ -217,6 +280,58 @@ class DbManager extends ChangeNotifier{
     final List<Map<String, dynamic>> result = await db.rawQuery('SELECT COUNT(*) AS count FROM songs');
     return Sqflite.firstIntValue(result) ?? 0;
   }
+
+  // Settings
+
+  Future<void> setIsInitialized(bool value) async {
+    final db = await database;
+    await db.rawUpdate('UPDATE settings SET is_initialized = ? WHERE id = 1', [value ? 1 : 0],);
+  }
+
+  Future<void> setSongDirectory(String? path) async {
+    final db = await database;
+    await db.rawUpdate('UPDATE settings SET song_directory = ? WHERE id = 1', [path],);
+  }
+
+  Future<void> setCurrentSystemTheme(ThemeMode theme) async {
+    final db = await database;
+    await db.rawUpdate('UPDATE settings SET current_system_theme = ? WHERE id = 1', [theme.name],);
+  }
+
+  Future<void> setCurrentTheme(CurrentTheme theme) async {
+    final db = await database;
+    await db.rawUpdate('UPDATE settings SET current_theme = ? WHERE id = 1', [theme.name],);
+  }
+
+
+  Future<bool> getIsInitialized() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT is_initialized FROM settings WHERE id = 1',);
+    return (result.first['is_initialized'] as int) == 1;
+  }
+
+  Future<String?> getSongDirectory() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT song_directory FROM settings WHERE id = 1',);
+    return result.first['song_directory'] as String?;
+  }
+
+  Future<ThemeMode?> getCurrentSystemTheme() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT current_system_theme FROM settings WHERE id = 1',);
+    String? themeString = result.first['current_system_theme'] as String?;
+    if(themeString != null) return ThemeMode.values.byName(themeString);
+    else return null;
+  }
+
+  Future<CurrentTheme?> getCurrentTheme() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT current_theme FROM settings WHERE id = 1',);
+    String? themeString = result.first['current_theme'] as String?;
+    if(themeString != null) return CurrentTheme.values.byName(themeString);
+    else return null;
+  }
+
 
   void closeDb(){
     _database?.close();
