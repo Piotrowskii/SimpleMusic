@@ -2,7 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+//import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+import 'package:audiotags/audiotags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:simple_music_app1/services/color_service.dart';
@@ -36,9 +37,9 @@ class _SongArtImageState extends State<SongArtImage> {
 
   void renderImage() async{
     if(widget.song.showCover == true){
-      final metadata = readMetadata(File(widget.song.filePath),getImage: true);
-      if (metadata.pictures.isNotEmpty) {
-        Picture picture = metadata.pictures.first;
+      Tag? tag = await AudioTags.read(widget.song.filePath);
+      if (tag != null && tag.pictures.isNotEmpty) {
+        Picture picture = tag.pictures.first;
         setState(() {
           imageList = picture.bytes;
         });

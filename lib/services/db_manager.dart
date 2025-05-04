@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+import 'package:audiotags/audiotags.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as pth;
@@ -90,10 +90,10 @@ class DbManager extends ChangeNotifier{
       String? songArtist;
       String? songTitle;
 
-      if (fileType == ".mp3") {
-        final metadata = readMetadata(file);
-        songArtist = metadata.artist;
-        songTitle = metadata.title;
+      Tag? tag = await AudioTags.read(file.path);
+      if(tag != null){
+        songTitle = tag.title;
+        songArtist = tag.trackArtist ?? tag.albumArtist;
       }
 
       await db.insert(
@@ -222,5 +222,6 @@ class DbManager extends ChangeNotifier{
     _database?.close();
     _database = null;
   }
+
 
 }

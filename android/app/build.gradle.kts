@@ -14,6 +14,13 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+buildscript {
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.1.1")
+    }
+}
+
+
 android {
     namespace = "com.example.simple_music_app1"
     compileSdk = flutter.compileSdkVersion
@@ -33,7 +40,9 @@ android {
         applicationId = "com.example.simple_music_app1"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+
+        //minSdk = flutter.minSdkVersion
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

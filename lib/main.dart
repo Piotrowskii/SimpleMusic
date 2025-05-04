@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
@@ -25,6 +26,7 @@ void main() async{
   runApp(const MyApp());
 
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -35,7 +35,6 @@ class ColorService extends ChangeNotifier{
   void changeTheme(CurrentTheme theme){
     primaryColor = getThemePrimaryColor(theme);
     currentTheme = theme;
-    PushNotificationService.changeCurrentColor(primaryColor);
     notifyListeners();
   }
 

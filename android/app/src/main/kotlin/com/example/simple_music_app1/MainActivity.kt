@@ -82,6 +82,7 @@ class MainActivity : FlutterActivity(){
             .setOngoing(true)
             .setColorized(true)
             .setOnlyAlertOnce(true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) // show on lockscreen
             .addAction(android.R.drawable.ic_media_previous, "Poprzednia", previousPendingIntent)
             .addAction(playPauseIcon, "Start/Stop", correctIntent)

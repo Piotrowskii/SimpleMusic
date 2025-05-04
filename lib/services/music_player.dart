@@ -26,8 +26,6 @@ class MusicPlayer{
         if(song == null) return;
         playSong(song);
       }
-      
-      PushNotificationService.changeNotificationPlaying(isPlaying.value);
 
       if(isPlaying.value) player.play();
       else await  player.stop();
@@ -38,8 +36,6 @@ class MusicPlayer{
         db.addSongToRecent(currentSong.value!);
 
         Song song = currentSong.value!;
-
-        PushNotificationService.showNotification(song.title ?? pth.basenameWithoutExtension(song.filePath), song.author ?? "Nieznany artysta");
       }
     });
 
@@ -54,12 +50,6 @@ class MusicPlayer{
       }
     });
 
-    PushNotificationService.listenToButtonPresses(
-      previousFunction: playPreviousSongButton,
-      playFunction: resumeSongButton,
-      pauseFunction: pauseSongButton,
-      nextFunction: playNextSongButton
-    );
   }
 
 

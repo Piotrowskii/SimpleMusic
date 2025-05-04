@@ -3,6 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  audiotags
+  awesome_notifications
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
