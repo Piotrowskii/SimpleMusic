@@ -115,7 +115,10 @@ class MusicPlayer{
 
     if(newSong == null){
 
-      if(shuffleMode.value == Shuffle.random) newSong = await db.getFirstRandomSong();
+      if(shuffleMode.value == Shuffle.random){
+        await db.randomizeSongs();
+        newSong = await db.getFirstRandomSong();
+      }
       else newSong = await db.getFirstSong();
 
       if(newSong == null) return;
@@ -132,7 +135,10 @@ class MusicPlayer{
     }
     if(newSong == null){
 
-      if(shuffleMode.value == Shuffle.random) newSong = await db.getLastRandomSong();
+      if(shuffleMode.value == Shuffle.random){
+        await db.randomizeSongs();
+        newSong = await db.getLastRandomSong();
+      }
       else newSong = await db.getLastSong();
 
       if(newSong == null) return;

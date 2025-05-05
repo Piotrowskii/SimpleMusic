@@ -19,7 +19,6 @@ class PlayerPage extends StatefulWidget {
   State<PlayerPage> createState() => _PlayerPageState();
 }
 
-//TODO: animatedSwicther tylko na tytule i obrazie
 
 class _PlayerPageState extends State<PlayerPage> {
   MusicPlayer musicPlayer = locator<MusicPlayer>();

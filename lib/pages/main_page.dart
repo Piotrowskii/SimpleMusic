@@ -20,6 +20,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>{
   TextEditingController searchController = TextEditingController();
+  ScrollController scrollController = ScrollController();
   FocusNode searchFocus = FocusNode();
   bool isSearching = false;
   bool isInitialized = false;
@@ -99,7 +100,6 @@ class _MainPageState extends State<MainPage>{
     super.dispose();
   }
 
-  //TODO: Zmien guziki żeby ich kod sie nie powtarzał + ustawienia i dodawanie do bazy piosenek ogranij
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +233,12 @@ class _MainPageState extends State<MainPage>{
     else if(displayedSongs.isEmpty){
       return Center(child: Text("Aktualnie wybrany katalog jest pusty możesz wybrać inny w opcjach",textAlign: TextAlign.center,));
     }else{
+      //TODO: add scrollbar but image showing is slow so isolates ?
       return ListView.separated(
+        padding: EdgeInsets.only(
+          right: 10
+        ),
+        controller: scrollController,
         cacheExtent: 1200,
         itemCount: displayedSongs.length,
         separatorBuilder: (context, index) => Divider(color: Colors.grey.withAlpha(50),height: 0,),

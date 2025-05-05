@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Flutter Demo',
-          theme: ThemeData(scaffoldBackgroundColor: Colors.white,inputDecorationTheme: InputDecorationTheme(fillColor: Colors.white,iconColor: Colors.white),appBarTheme: AppBarTheme(backgroundColor: Colors.white)).copyWith(
+          theme: ThemeData(scrollbarTheme: ScrollbarThemeData().copyWith(thumbColor: WidgetStatePropertyAll(colorService.primaryColor)),scaffoldBackgroundColor: Colors.white,inputDecorationTheme: InputDecorationTheme(fillColor: Colors.white,iconColor: Colors.white),appBarTheme: AppBarTheme(backgroundColor: Colors.white)).copyWith(
             extensions: <ThemeExtension<dynamic>>[
               ColorExtension(
                 primaryColor: colorService.primaryColor,
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
               )
             ]
           ),
-          darkTheme: ThemeData.dark().copyWith(
+          darkTheme: ThemeData.dark().copyWith(scrollbarTheme: ScrollbarThemeData().copyWith(thumbColor: WidgetStatePropertyAll(colorService.primaryColor)),
             extensions: <ThemeExtension<dynamic>>[
               ColorExtension(
                 primaryColor: colorService.primaryColor,
