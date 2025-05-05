@@ -36,6 +36,7 @@ class DbManager extends ChangeNotifier{
         await db.execute(
           '''CREATE TABLE songs(
             id INTEGER PRIMARY KEY,
+            random INTEGER,
             path TEXT UNIQUE,
             title TEXT,
             favourite INTEGER,
@@ -168,10 +169,55 @@ class DbManager extends ChangeNotifier{
       );
     }
   }
+  Future<int?> getSongsRandomValue(int id) async {
+    final db = await database;
+    final List<Map<String, dynamic>> result = await db.rawQuery('SELECT random FROM songs WHERE id = ?', [id],);
+
+    if (result.isNotEmpty) {
+      return result.first['random'] as int;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> randomizeSongs() async{
+    final db = await database;
+    await db.rawUpdate('UPDATE songs SET random = abs(random() % 10000000)');
+  }
+
+  Future<Song?> getFirstRandomSong() async{
+    final db = await database;
+    final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs ORDER BY random DESC LIMIT 1');
+    return getSongFromMap(map);
+  }
+
+  Future<Song?> getLastRandomSong() async{
+    final db = await database;
+    final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs ORDER BY random ASC LIMIT 1');
+    return getSongFromMap(map);
+  }
 
   Future<Song?> getRandomSong() async{
     final db = await database;
     final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs ORDER BY RANDOM() LIMIT 1');
+    return getSongFromMap(map);
+  }
+
+  Future<Song?> getNextRandomSong(Song song) async{
+    int? random = await getSongsRandomValue(song.id);
+    if(random == null) return await getFirstRandomSong();
+
+    final db = await database;
+    final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs WHERE random < ? ORDER BY random DESC LIMIT 1',[random]);
+    return getSongFromMap(map);
+  }
+
+  Future<Song?> getPreviousRandomSong(Song song) async{
+    int? random = await getSongsRandomValue(song.id);
+    if(random == null) return await getLastRandomSong();
+
+    final db = await database;
+    final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs WHERE random > ? ORDER BY random ASC LIMIT 1',[random]);
     return getSongFromMap(map);
   }
 
@@ -291,6 +337,7 @@ class DbManager extends ChangeNotifier{
     final List<Map<String, dynamic>> result = await db.rawQuery('SELECT COUNT(*) AS count FROM songs');
     return Sqflite.firstIntValue(result) ?? 0;
   }
+
 
   // Settings
 

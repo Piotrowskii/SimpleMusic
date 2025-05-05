@@ -15,8 +15,6 @@ class MusicPlayer{
   bool playSongCooldown = false;
   ValueNotifier<Shuffle> shuffleMode = ValueNotifier(Shuffle.loopOne);
 
-  //TODO: przecowywać długośc piosenki w bazie
-
   MusicPlayer(){
 
 
@@ -101,6 +99,7 @@ class MusicPlayer{
   }
 
   void playRandomSong() async{
+    await db.randomizeSongs();
     Song? song = await db.getRandomSong();
     if(song == null) return;
     await playSong(song);
@@ -109,13 +108,16 @@ class MusicPlayer{
   void playNextSongButton() async{
     Song? newSong;
     if(shuffleMode.value == Shuffle.random){
-      newSong = await db.getRandomSong();
+      newSong = await db.getNextRandomSong(currentSong.value!);
     }else{
       newSong = await db.getNextSongbyModificationDate(currentSong.value!.modification_date.microsecondsSinceEpoch);
     }
 
     if(newSong == null){
-      newSong = await db.getFirstSong();
+
+      if(shuffleMode.value == Shuffle.random) newSong = await db.getFirstRandomSong();
+      else newSong = await db.getFirstSong();
+
       if(newSong == null) return;
     }
     await playSong(newSong);
@@ -124,12 +126,15 @@ class MusicPlayer{
   void playPreviousSongButton() async{
     Song? newSong;
     if(shuffleMode.value == Shuffle.random){
-      newSong = await db.getRandomSong();
+      newSong = await db.getPreviousRandomSong(currentSong.value!);
     }else{
       newSong = await db.getPreviousSongbyModificationDate(currentSong.value!.modification_date.microsecondsSinceEpoch);
     }
     if(newSong == null){
-      newSong = await db.getLastSong();
+
+      if(shuffleMode.value == Shuffle.random) newSong = await db.getLastRandomSong();
+      else newSong = await db.getLastSong();
+
       if(newSong == null) return;
     }
     await playSong(newSong);

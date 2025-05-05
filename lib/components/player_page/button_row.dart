@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/enmus/Shuffle.dart';
+import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 
@@ -18,6 +19,7 @@ class ButtonRow extends StatefulWidget {
 
 class _ButtonRowState extends State<ButtonRow> {
   MusicPlayer musicPlayer = locator<MusicPlayer>();
+  DbManager db = locator<DbManager>();
 
   //Colors.grey.shade300
   //Colors.grey.shade400
@@ -36,7 +38,10 @@ class _ButtonRowState extends State<ButtonRow> {
               VoidCallback shuffleFunction = (){};
               if(mode == Shuffle.loopOne){
                 schuffleIcon = Icons.repeat_one;
-                shuffleFunction = (){musicPlayer.shuffleMode.value = Shuffle.random;};
+                shuffleFunction = (){
+                  db.randomizeSongs();
+                  musicPlayer.shuffleMode.value = Shuffle.random;
+                };
               }
               else if(mode == Shuffle.random){
                 schuffleIcon = Icons.shuffle;
