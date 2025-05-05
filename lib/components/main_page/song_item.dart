@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_music_app1/components/song_art_image.dart';
 import 'package:path/path.dart' as pth;
 import 'package:simple_music_app1/pages/player_page.dart';
+import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 import 'package:simple_music_app1/services/color_theme_extension.dart';
@@ -20,6 +21,7 @@ class SongItem extends StatefulWidget {
 }
 
 class _SongItemState extends State<SongItem> {
+  DbManager db = locator<DbManager>();
 
 
   @override
@@ -31,13 +33,19 @@ class _SongItemState extends State<SongItem> {
 
     return InkWell(
       borderRadius: BorderRadius.circular(10),
-      onTap: (){
+      onTap: () async{
         widget.customOnTap?.call();
         player.playSongById(song.id);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PlayerPage()),
-        );
+
+        if(await db.doesSongExist(song)){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PlayerPage()),
+          );
+        }
+        else{
+          db.updateSongDbWithoutDeleting();
+        }
       },
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 70),

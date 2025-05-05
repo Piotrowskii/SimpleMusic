@@ -9,6 +9,7 @@ import 'package:simple_music_app1/services/color_theme_extension.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../models/song.dart';
+import '../services/db_manager.dart';
 import '../services/get_it_register.dart';
 
 class PlayerPage extends StatefulWidget {
@@ -22,6 +23,15 @@ class PlayerPage extends StatefulWidget {
 
 class _PlayerPageState extends State<PlayerPage> {
   MusicPlayer musicPlayer = locator<MusicPlayer>();
+  DbManager db = locator<DbManager>();
+
+  Future<void> popIfSongDoesntExsist(Song song, BuildContext context) async{
+    if(!await db.doesSongExist(song)){
+
+      if(context.mounted) Navigator.pop(context);
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +50,7 @@ class _PlayerPageState extends State<PlayerPage> {
                   builder: (context,song,nonUpdating){
 
                     if(song != null){
+                      popIfSongDoesntExsist(song, context);
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

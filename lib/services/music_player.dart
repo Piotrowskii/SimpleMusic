@@ -53,7 +53,7 @@ class MusicPlayer{
     db.addListener((){
       if(currentSong.value != null){
         Future.delayed(Duration.zero, () async {
-          final isInDb = await db.doesSongExist(currentSong.value!.filePath);
+          final isInDb = await db.doesSongExist(currentSong.value!);
           if(!isInDb){
             currentSong.value = null;
           }
@@ -65,11 +65,12 @@ class MusicPlayer{
 
 
   Future<void> playSong(Song song) async{
+
     if(playSongCooldown) return;
     playSongCooldown = true;
     try{
       await player.stop();
-      if(io.File(song.filePath).existsSync()){
+      if(await db.doesSongExist(song)){
         await player.setFilePath(song.filePath);
         player.play();
         currentSong.value = song;

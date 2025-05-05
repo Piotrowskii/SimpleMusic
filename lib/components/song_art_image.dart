@@ -34,6 +34,13 @@ class _SongArtImageState extends State<SongArtImage> {
 
   void renderImage() async{
     if(widget.song.showCover == true){
+      if(!File(widget.song.filePath).existsSync()){
+        setState(() {
+          imageList = null;
+        });
+        return;
+      }
+
       final metadata = readMetadata(File(widget.song.filePath),getImage: true);
       if (metadata.pictures.isNotEmpty) {
         Picture picture = metadata.pictures.first;

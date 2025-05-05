@@ -196,13 +196,17 @@ class _MainPageState extends State<MainPage>{
                   ),
                   Spacer(),
                   if(isSearching) IconButton(onPressed: (){clearSearch();}, icon: Icon(Icons.search_off)),
-                  isRefreshing ?
-                  Icon(Icons.hourglass_bottom)
-                  :
-                  IconButton(
-                      onPressed: () async{refreshSongListButton();},
-                      icon: Icon(Icons.refresh)
+                  Visibility(
+                    visible: !isSearching,
+                    child: isRefreshing?
+                    IconButton(onPressed: (){},icon: Icon(Icons.hourglass_bottom),)
+                        :
+                    IconButton(
+                        onPressed: () async{refreshSongListButton();},
+                        icon: Icon(Icons.refresh)
+                    )
                   )
+
 
                 ],
               ),

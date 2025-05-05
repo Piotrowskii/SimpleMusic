@@ -142,9 +142,11 @@ class DbManager extends ChangeNotifier{
     }
   }
 
-  Future<bool> doesSongExist(String path) async {
+  Future<bool> doesSongExist(Song song) async {
+    if(!File(song.filePath).existsSync()) return false;
+
     final db = await database;
-    final result = await db.rawQuery('SELECT COUNT(*) FROM songs WHERE path = ?', [path],);
+    final result = await db.rawQuery('SELECT COUNT(*) FROM songs WHERE path = ?', [song.filePath],);
     return (result.first['COUNT(*)'] as int) > 0;
   }
 
@@ -213,13 +215,15 @@ class DbManager extends ChangeNotifier{
   Future<Song?> getNextSongbyModificationDate(int microseconds) async{
     final db = await database;
     final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs WHERE modification_date < ? ORDER BY modification_date DESC LIMIT 1',[microseconds]);
-    return getSongFromMap(map);
+    Song? song = await getSongFromMap(map);
+    return song;
   }
 
   Future<Song?> getPreviousSongbyModificationDate(int microseconds) async{
     final db = await database;
     final List<Map<String,dynamic>> map = await db.rawQuery('SELECT * FROM songs WHERE modification_date > ? ORDER BY modification_date ASC LIMIT 1',[microseconds]);
-    return getSongFromMap(map);
+    Song? song = await getSongFromMap(map);
+    return song;
   }
 
   Future<Song?> getFirstSong() async{
@@ -263,8 +267,15 @@ class DbManager extends ChangeNotifier{
   Future<Song?> getSongFromMap(List<Map<String,dynamic>> map) async{
     if(map.isEmpty || map.length > 1) return null;
     Song song = Song.fromDbMap(map.first);
-    song.duration = await getSongDuration(song.filePath);
-    return song;
+
+    if(await doesSongExist(song)){
+      song.duration = await getSongDuration(song.filePath);
+      return song;
+    }
+    else {
+      await updateSongDbWithoutDeleting();
+      return null;
+    }
   }
 
   Future<Duration> getSongDuration(String path) async{
