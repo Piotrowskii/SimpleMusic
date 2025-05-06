@@ -71,8 +71,8 @@ android {
 }
 
 dependencies {
-    implementation("androidx.media:media:1.6.0")
-    implementation("androidx.core:core:1.9.0")
+//    implementation("androidx.media:media:1.6.0")
+//    implementation("androidx.core:core:1.9.0")
 }
 
 flutter {

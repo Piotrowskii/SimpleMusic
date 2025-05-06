@@ -1,7 +1,7 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
+import '../enmus/Shuffle.dart';
 import 'music_player.dart';
 
 class MyAudioHandler extends BaseAudioHandler with SeekHandler {
@@ -11,14 +11,37 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
     player.isPlaying.addListener(() {
       playbackState.add(PlaybackState(
         controls: [
+          MediaControl.skipToPrevious,
           player.isPlaying.value ? MediaControl.pause : MediaControl.play,
-          MediaControl.stop,
+          MediaControl.skipToNext
         ],
-        androidCompactActionIndices: const [0, 1],
+        systemActions: {
+          MediaAction.seek
+        },
+        androidCompactActionIndices: const [0, 1, 2],
         playing: player.isPlaying.value,
-        processingState: _mapProcessingState(player.player.processingState),
+        updatePosition: player.player.position,
+        processingState: AudioProcessingState.ready,
         updateTime: DateTime.now(),
       ));
+    });
+
+    player.player.positionStream.listen((position){
+        playbackState.add(PlaybackState(
+          controls: [
+            MediaControl.skipToPrevious,
+            player.isPlaying.value ? MediaControl.pause : MediaControl.play,
+            MediaControl.skipToNext
+          ],
+          systemActions: {
+            MediaAction.seek
+          },
+          androidCompactActionIndices: const [0, 1, 2],
+          playing: player.isPlaying.value,
+          updatePosition: position,
+          processingState: AudioProcessingState.ready,
+          updateTime: DateTime.now(),
+        ));
     });
 
     player.currentSong.addListener(() {
@@ -28,43 +51,25 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
       }
     });
 
-    player.player.playerStateStream.listen((state) {
-      if(state.playing){
-        playbackState.add(PlaybackState(
-          controls: [
-            MediaControl.pause,
-            MediaControl.play,
-            MediaControl.stop,
-          ],
-          androidCompactActionIndices: const [0, 1, 2],
-          playing: player.isPlaying.value,
-          processingState: _mapProcessingState(player.player.processingState),
-          updateTime: DateTime.now(),
-        ));
-      }
-
-
-    });
   }
 
-  AudioProcessingState _mapProcessingState(ProcessingState ps) {
-    switch (ps) {
-      case ProcessingState.idle:
-        return AudioProcessingState.idle;
-      case ProcessingState.loading:
-        return AudioProcessingState.loading;
-      case ProcessingState.buffering:
-        return AudioProcessingState.buffering;
-      case ProcessingState.ready:
-        return AudioProcessingState.ready;
-      case ProcessingState.completed:
-        return AudioProcessingState.completed;
-    }
-  }
+
 
   @override
   Future<void> play() => player.resumeSongButton();
 
   @override
+  Future<void> skipToNext() => player.playNextSongButton();
+
+  @override
+  Future<void> skipToPrevious() => player.playPreviousSongButton();
+
+  @override
   Future<void> pause() => player.pauseSongButton();
+
+  @override
+  Future<void> stop() => player.pauseSongButton();
+
+  @override
+  Future<void> seek(Duration position) => player.player.seek(position);
 }

@@ -2,6 +2,7 @@ import 'dart:io' as io;
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:path/path.dart' as pth;
 import 'package:simple_music_app1/enmus/Shuffle.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
@@ -66,7 +67,7 @@ class MusicPlayer{
   MediaItem toMediaItem(Song song) {
     return MediaItem(
       id: song.filePath,
-      title: song.title ?? "Nieznany tytuł",
+      title: song.title ?? pth.basenameWithoutExtension(song.filePath),
       artist: song.author ?? "Nieznany wykonawca",
       duration: song.duration ?? Duration(seconds: 60),
     );
@@ -137,7 +138,7 @@ class MusicPlayer{
     await playSong(newSong);
   }
 
-  void playPreviousSongButton() async{
+  Future<void> playPreviousSongButton() async{
     Song? newSong;
     if(shuffleMode.value == Shuffle.random){
       newSong = await db.getPreviousRandomSong(currentSong.value!);

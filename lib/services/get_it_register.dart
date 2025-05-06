@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
