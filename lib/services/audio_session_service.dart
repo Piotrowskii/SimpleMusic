@@ -23,10 +23,10 @@ Future<void> startAudioSession() async{
     } else {
       switch (event.type) {
         case AudioInterruptionType.duck:
-          //musicPlayer.isPlaying.value = true;
+          musicPlayer.isPlaying.value = true;
           break;
         case AudioInterruptionType.pause:
-          //musicPlayer.isPlaying.value = true;
+          musicPlayer.isPlaying.value = true;
         case AudioInterruptionType.unknown:
           //musicPlayer.isPlaying.value = true;
           break;

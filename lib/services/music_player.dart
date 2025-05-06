@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:simple_music_app1/enmus/Shuffle.dart';
@@ -59,6 +60,16 @@ class MusicPlayer{
       }
     });
 
+
+  }
+
+  MediaItem toMediaItem(Song song) {
+    return MediaItem(
+      id: song.filePath,
+      title: song.title ?? "Nieznany tytuł",
+      artist: song.author ?? "Nieznany wykonawca",
+      duration: song.duration ?? Duration(seconds: 60),
+    );
   }
 
 
@@ -105,7 +116,7 @@ class MusicPlayer{
     await playSong(song);
   }
 
-  void playNextSongButton() async{
+  Future<void> playNextSongButton() async{
     Song? newSong;
     if(shuffleMode.value == Shuffle.random){
       newSong = await db.getNextRandomSong(currentSong.value!);
@@ -156,11 +167,15 @@ class MusicPlayer{
       newSong = await db.getNextSongbyModificationDate(currentSong.value!.modification_date.microsecondsSinceEpoch);
     }
     else if(shuffleMode.value == Shuffle.random){
-      newSong = await db.getRandomSong();
+      newSong = await db.getNextRandomSong(currentSong.value!);
     }
 
     if(newSong == null){
-      newSong = await db.getFirstSong();
+      if(shuffleMode.value == Shuffle.random){
+        await db.randomizeSongs();
+        newSong = await db.getFirstRandomSong();
+      }
+      else newSong = await db.getFirstSong();
       if(newSong == null) return;
     }
     await playSong(newSong);

@@ -47,6 +47,7 @@ dependencies:
   #awesome_notifications: ^0.10.0
   #audiotags: ^1.4.5
   audio_metadata_reader: ^1.4.1
+  audio_service: ^0.18.18
 
 
 

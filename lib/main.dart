@@ -1,6 +1,8 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
+import 'package:simple_music_app1/services/audio_service.dart';
 import 'package:simple_music_app1/services/audio_session_service.dart';
 import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
@@ -20,6 +22,7 @@ void main() async{
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await startAudioSession(); // Na razie tylko zatrzymuje :(
+  
 
   runApp(const MyApp());
 
