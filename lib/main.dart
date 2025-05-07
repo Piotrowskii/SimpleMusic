@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:simple_music_app1/pages/main_page.dart';
 import 'package:simple_music_app1/services/audio_service.dart';
 import 'package:simple_music_app1/services/audio_session_service.dart';
@@ -8,6 +9,7 @@ import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/permission_service.dart';
 import 'package:simple_music_app1/services/color_theme_extension.dart';
+import 'package:simple_music_app1/l10n/generated/app_localizations.dart';
 
 
 
@@ -48,6 +50,17 @@ class MyApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Flutter Demo',
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            Locale('en'),
+            Locale('pl'),
+          ],
+          locale: colorService.currentLanguage,
           theme: ThemeData(scrollbarTheme: ScrollbarThemeData().copyWith(thumbColor: WidgetStatePropertyAll(colorService.primaryColor)),scaffoldBackgroundColor: Colors.white,inputDecorationTheme: InputDecorationTheme(fillColor: Colors.white,iconColor: Colors.white),appBarTheme: AppBarTheme(backgroundColor: Colors.white)).copyWith(
             extensions: <ThemeExtension<dynamic>>[
               ColorExtension(

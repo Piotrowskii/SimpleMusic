@@ -4,6 +4,7 @@ import 'package:simple_music_app1/components/main_page/song_item.dart';
 import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/pages/settings_page.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/song.dart';
 import '../services/color_service.dart';
 import '../services/db_manager.dart';
@@ -77,18 +78,19 @@ class _MainPageState extends State<MainPage>{
     });
   }
 
+  void dbListener() {
+    checkIfInitialized();
+    displayAllSongs();
+  }
+
   @override
   void initState(){
     super.initState();
 
 
-    checkIfInitialized();
-    displayAllSongs();
+    dbListener();
 
-    db.addListener((){
-      checkIfInitialized();
-      displayAllSongs();
-    });
+    db.addListener(dbListener);
   }
 
 
@@ -97,6 +99,7 @@ class _MainPageState extends State<MainPage>{
   void dispose() {
     searchController.dispose();
     searchFocus.dispose();
+    db.removeListener(dbListener);
     super.dispose();
   }
 
@@ -104,6 +107,7 @@ class _MainPageState extends State<MainPage>{
   @override
   Widget build(BuildContext context) {
     final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+    AppLocalizations localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -141,6 +145,8 @@ class _MainPageState extends State<MainPage>{
                     },
                     borderRadius: BorderRadius.circular(10),
                     child: Ink(
+                      width: 100,
+                      height: 85,
                       decoration: BoxDecoration(
                           // color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
                         color: colorExtension.primaryColor ,
@@ -154,9 +160,10 @@ class _MainPageState extends State<MainPage>{
                             right: 12
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.settings_outlined, size: 40),
-                            Text("Ustawienia")
+                            Text(localization.settings)
                           ],
                         ),
                       ),
@@ -188,7 +195,7 @@ class _MainPageState extends State<MainPage>{
                         child: Row(
                           children: [
                             Icon(Icons.shuffle),
-                            Text("losowa piosenka")
+                            Text(localization.randomSong)
                           ],
                         ),
                       ),
@@ -224,14 +231,16 @@ class _MainPageState extends State<MainPage>{
   }
 
   Widget SongList(){
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
     if(displayedSongs.isEmpty && isSearching){
-      return Center(child: Text("Nie znaleziono takiej piosneki"),);
+      return Center(child: Text(localization.searchSongNotFound),);
     }
     else if(!isInitialized){
-      return Center(child: Text("Musisz ustawic katalog z piosenkami w opcjach"),);
+      return Center(child: Text(localization.notInitialized),);
     }
     else if(displayedSongs.isEmpty){
-      return Center(child: Text("Aktualnie wybrany katalog jest pusty możesz wybrać inny w opcjach",textAlign: TextAlign.center,));
+      return Center(child: Text(localization.emptyFolder,textAlign: TextAlign.center,));
     }else{
       //TODO: add scrollbar but image showing is slow so isolates ?
       return ListView.separated(
@@ -251,6 +260,8 @@ class _MainPageState extends State<MainPage>{
   }
 
   void showFavouriteSongsModal(BuildContext context){
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
     showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
@@ -260,7 +271,7 @@ class _MainPageState extends State<MainPage>{
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError || !snapshot.hasData) {
-                return Center(child: Text('Błąd przy pobieraniu ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+                return Center(child: Text(localization.errorGettingFavouriteSongs, style: TextStyle(fontWeight: FontWeight.bold),));
               }
               else {
                 List<Song> favouriteSongs = snapshot.data!;
@@ -270,7 +281,7 @@ class _MainPageState extends State<MainPage>{
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        Text("Ulubione Piosenki", style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text(localization.favouriteSongs, style: TextStyle(fontWeight: FontWeight.bold),),
                         SizedBox(height: 15,),
                         Expanded(
                           child: ListView.separated(
@@ -289,7 +300,7 @@ class _MainPageState extends State<MainPage>{
                   );
                 }
                 else{
-                  return Center(child: Text('Nie masz ulubionych piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+                  return Center(child: Text(localization.favouriteEmpty, style: TextStyle(fontWeight: FontWeight.bold),));
                 }
               }
             },
@@ -299,6 +310,8 @@ class _MainPageState extends State<MainPage>{
   }
 
   void showRecentSongsModal(BuildContext context){
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
     showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
@@ -308,7 +321,7 @@ class _MainPageState extends State<MainPage>{
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError || !snapshot.hasData) {
-                return Center(child: Text('Błąd przy pobieraniu ostatnich piosenek', style: TextStyle(fontWeight: FontWeight.bold),));
+                return Center(child: Text(localization.errorGettingRecentSong, style: TextStyle(fontWeight: FontWeight.bold),));
               }
               else {
                 List<Song> favouriteSongs = snapshot.data!;
@@ -318,7 +331,7 @@ class _MainPageState extends State<MainPage>{
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        Text("Ostatnio odtwarzane", style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text(localization.recentlyPlayed, style: TextStyle(fontWeight: FontWeight.bold),),
                         SizedBox(height: 15,),
                         Expanded(
                           child: ListView.separated(
@@ -345,7 +358,7 @@ class _MainPageState extends State<MainPage>{
                   );
                 }
                 else{
-                  return Center(child: Text('Nic jeszcze nie odtworzyłeś :(', style: TextStyle(fontWeight: FontWeight.bold),));
+                  return Center(child: Text(localization.recentEmpty, style: TextStyle(fontWeight: FontWeight.bold),));
                 }
               }
             },
@@ -356,15 +369,19 @@ class _MainPageState extends State<MainPage>{
 
 
   InkWell RecentButton(Color backgroundColor){
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
     return InkWell(
       onTap: () {
         showRecentSongsModal(context);
       },
       borderRadius: BorderRadius.circular(10),
       child: Ink(
+        width: 100,
+        height: 85,
         decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
           padding: const EdgeInsets.only(
@@ -374,9 +391,10 @@ class _MainPageState extends State<MainPage>{
               right: 20
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.access_time_outlined, size: 40),
-              Text("Ostatnie")
+              Text(localization.recent)
             ],
           ),
         ),
@@ -385,12 +403,16 @@ class _MainPageState extends State<MainPage>{
   }
 
   InkWell FavouriteButton(Color backgroundColor){
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
     return InkWell(
       onTap: () {
         showFavouriteSongsModal(context);
       },
       borderRadius: BorderRadius.circular(10),
       child: Ink(
+        width: 100,
+        height: 85,
         decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(10)
@@ -403,9 +425,10 @@ class _MainPageState extends State<MainPage>{
               right: 20
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.star_border, size: 40),
-              Text("Ulubione")
+              Text(localization.favourite)
             ],
           ),
         ),

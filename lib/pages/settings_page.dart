@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:simple_music_app1/components/settings_page/language_picker.dart';
 import 'package:simple_music_app1/components/settings_page/music_folder_alert.dart';
 import 'package:simple_music_app1/components/settings_page/primary_color_picker.dart';
 import 'package:simple_music_app1/components/settings_page/system_theme_picker.dart';
@@ -9,6 +10,7 @@ import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/permission_service.dart';
 import 'package:simple_music_app1/services/push_notification_service.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../services/get_it_register.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -24,8 +26,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
      return Scaffold(
-       appBar: AppBar(title: Text("Ustawienia"),centerTitle: true,),
+       appBar: AppBar(title: Text(localization.settings),centerTitle: true,),
        body: SafeArea(
          child: Padding(
            padding: EdgeInsets.all(10),
@@ -50,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
                          children: [
                            Icon(Icons.folder),
                            SizedBox(width: 20,),
-                           Text("Zmień katalog z piosenkami")
+                           Text(localization.changeSongsFolder)
                          ],
                        ),
                      ),
@@ -59,6 +63,8 @@ class _SettingsPageState extends State<SettingsPage> {
                    SystemThemePicker(),
                    Divider(),
                    PrimaryColorPicker(),
+                   Divider(),
+                   LanguagePicker()
                  ],
                ),
              ),

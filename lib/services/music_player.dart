@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as pth;
 import 'package:simple_music_app1/enmus/Shuffle.dart';
+import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
@@ -65,10 +66,25 @@ class MusicPlayer{
   }
 
   MediaItem toMediaItem(Song song) {
+    ColorService colorService = locator<ColorService>();
+    String unknownArtist;
+
+    //TODO: Stupid fix but want to get this done (in future create translation class for places that need dynamic access without buildContext)
+
+    switch(colorService.currentLanguage.languageCode){
+      case "pl":
+        unknownArtist = "Nieznany artysta";
+        break;
+      case "en":
+        unknownArtist = "Unknown Artist";
+      default:
+        unknownArtist = "Unknown Artist";
+    }
+
     return MediaItem(
       id: song.filePath,
       title: song.title ?? pth.basenameWithoutExtension(song.filePath),
-      artist: song.author ?? "Nieznany wykonawca",
+      artist: song.author ?? unknownArtist,
       duration: song.duration ?? Duration(seconds: 60),
     );
   }
@@ -88,7 +104,7 @@ class MusicPlayer{
       }
     }
     catch(e){
-      print("Błąd odtwarzania: $e");
+
     }
     finally{
       playSongCooldown = false;

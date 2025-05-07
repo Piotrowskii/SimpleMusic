@@ -3,6 +3,7 @@ import 'package:simple_music_app1/enmus/current_theme.dart';
 import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
+import '../../l10n/generated/app_localizations.dart';
 import '../../services/color_theme_extension.dart';
 
 class PrimaryColorPicker extends StatefulWidget {
@@ -23,11 +24,12 @@ class _PrimaryColorPickerState extends State<PrimaryColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations localization = AppLocalizations.of(context)!;
     final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
 
     return Column(
       children: [
-        Text("Głowny kolor"),
+        Text(localization.mainColor),
         SizedBox(height: 10,),
         Wrap(
           spacing: 8,

@@ -3,6 +3,8 @@ import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/color_theme_extension.dart';
 
+import '../../l10n/generated/app_localizations.dart';
+
 class SystemThemePicker extends StatefulWidget {
   const SystemThemePicker({super.key});
 
@@ -23,6 +25,7 @@ class _SystemThemePickerState extends State<SystemThemePicker> {
   @override
   Widget build(BuildContext context) {
     final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+    AppLocalizations localization = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -30,7 +33,7 @@ class _SystemThemePickerState extends State<SystemThemePicker> {
       ),
       child: Column(
         children: [
-          Text("Motyw"),
+          Text(localization.systemTheme),
           SizedBox(height: 10,),
           Wrap(
             spacing: 8,

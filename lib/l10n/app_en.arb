@@ -1,0 +1,33 @@
+{
+    "unknownArtist": "Unknown Artist",
+
+    "settings": "Settings",
+    "recent": "Recent",
+    "favourite": "Favourite",
+    "favouriteSongs" : "Favourite songs",
+    "randomSong": "Random song",
+    "notInitialized": "Please select songs folder in settings",
+    "emptyFolder" : "Currently selected folder is empty",
+    "searchSongNotFound" : "No songs found",
+    "recentEmpty" : "Nothing was played",
+    "recentlyPlayed" : "Recently played",
+    "favouriteEmpty" : "You have no favourite songs",
+    "errorGettingFavouriteSongs" : "ERROR getting favourite songs",
+    "errorGettingRecentSong" : "ERROR getting recent songs",
+    "miniPlayerCurrentlyPlaying" : "Currently playing:",
+    "miniPlayerNothingPlaying": "Nothing is playing, right now",
+
+    "changeSongsFolder" : "Change songs folder",
+    "selectFolder" : "Select folder",
+    "exit" : "Exit",
+    "apply" : "Apply",
+    "saving" : "Saving",
+    "systemTheme" : "Theme",
+    "mainColor" : "Main color",
+    "language" : "Language"
+
+
+
+
+
+}

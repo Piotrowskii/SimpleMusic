@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
+import '../../l10n/generated/app_localizations.dart';
 import '../../services/permission_service.dart';
 
 class MusicFolderAlert extends StatefulWidget {
@@ -59,10 +60,12 @@ class _MusicFolderAlertState extends State<MusicFolderAlert> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AlertDialog(
-        title: Text(isSaving ? "Zapisywanie" : "Wybierz folder",textAlign: TextAlign.center,style: TextStyle(fontSize: 20,)),
+        title: Text(isSaving ? localization.saving : localization.selectFolder,textAlign: TextAlign.center,style: TextStyle(fontSize: 20,)),
         content: AnimatedSwitcher(
           duration: Duration(milliseconds: 300),
           transitionBuilder: (child,animation){
@@ -74,12 +77,12 @@ class _MusicFolderAlertState extends State<MusicFolderAlert> {
           if(!isSaving) Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Wyjdź")),
+              TextButton(onPressed: (){Navigator.pop(context);}, child: Text(localization.exit)),
               TextButton(
                 onPressed: (){
                   addSongsToDb(context);
                   },
-                child: Text("Zastosuj"),
+                child: Text(localization.apply),
               ),
             ],
           ),

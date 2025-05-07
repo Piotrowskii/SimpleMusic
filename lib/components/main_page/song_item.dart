@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_music_app1/components/song_art_image.dart';
 import 'package:path/path.dart' as pth;
+import 'package:simple_music_app1/l10n/generated/app_localizations.dart';
 import 'package:simple_music_app1/pages/player_page.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
@@ -27,6 +28,7 @@ class _SongItemState extends State<SongItem> {
   @override
   Widget build(BuildContext context) {
     ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+    AppLocalizations localization = AppLocalizations.of(context)!;
 
     Song song = widget.song;
     MusicPlayer player = widget.player;
@@ -70,7 +72,7 @@ class _SongItemState extends State<SongItem> {
                       style: TextStyle(color: colorExtension.primaryColor),
                     ),
                     Text(
-                      song.author ?? "Nieznany wykonawca",
+                      song.author ?? localization.unknownArtist,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 10,

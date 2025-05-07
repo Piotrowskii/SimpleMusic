@@ -8,6 +8,7 @@ import 'package:simple_music_app1/components/song_art_image.dart';
 import 'package:simple_music_app1/services/color_theme_extension.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import '../l10n/generated/app_localizations.dart';
 import '../models/song.dart';
 import '../services/db_manager.dart';
 import '../services/get_it_register.dart';
@@ -35,6 +36,7 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   Widget build(BuildContext context) {
     final ColorExtension colorExtension = Theme.of(context).extension<ColorExtension>()!;
+    AppLocalizations localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -97,7 +99,7 @@ class _PlayerPageState extends State<PlayerPage> {
                           SizedBox(height: 5,),
                           Flexible(
                             child: Text(
-                              song.author ?? "Nieznany wykonawca",
+                              song.author ?? localization.unknownArtist,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Colors.grey
@@ -107,7 +109,12 @@ class _PlayerPageState extends State<PlayerPage> {
                           SizedBox(height: 60,),
                           MusicSlider(songDuration: song.duration ?? Duration.zero),
                           SizedBox(height: 30,),
-                          ButtonRow(song: song)
+                          ButtonRow(
+                            song: song,
+                            returnButtonFunction: (){
+                              if(context.mounted) Navigator.pop(context);
+                              },
+                          )
                         ],
                       );
 

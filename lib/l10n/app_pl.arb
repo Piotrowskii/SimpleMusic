@@ -1,0 +1,29 @@
+{
+    "unknownArtist": "Nieznany artysta",
+
+    "settings": "Ustawienia",
+    "recent": "Ostatnie",
+    "favourite": "Ulubione",
+    "favouriteSongs" : "Ulubione piosenki",
+    "randomSong": "Losowa piosenka",
+    "notInitialized": "Wybierz folder z piosenkami w ustawieniach",
+    "emptyFolder" : "Aktualnie wybrany folder jest pusty",
+    "searchSongNotFound" : "Nie znaleziono takiej piosneki",
+    "recentEmpty" : "Nic nie zostało odtworzone",
+    "recentlyPlayed" : "Ostatnio odtwarzane",
+    "favouriteEmpty" : "Nie masz ulubionych piosenek",
+    "errorGettingFavouriteSongs" : "BŁĄD przy pobieraniu listy ulubionych piosenek",
+    "errorGettingRecentSong" : "ERROR przy pobieraniu listy ostatnio granych piosenek",
+    "miniPlayerCurrentlyPlaying" : "Aktualnie odtwarzane:",
+    "miniPlayerNothingPlaying": "Nic aktualnie nie gra",
+
+    "changeSongsFolder" : "Zmień folder z piosenkami",
+    "selectFolder" : "Wybierz folder",
+    "exit" : "Wyjdź",
+    "apply" : "Zastosuj",
+    "saving" : "Zapisywanie",
+    "systemTheme" : "Motyw",
+    "mainColor" : "Główny kolor",
+    "language" : "Język"
+
+}

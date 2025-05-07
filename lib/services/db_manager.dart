@@ -58,6 +58,7 @@ class DbManager extends ChangeNotifier{
             id INTEGER PRIMARY KEY,
             is_initialized NUMERIC,
             song_directory TEXT,
+            language TEXT,
             current_system_theme TEXT,
             current_theme TEXT
           )'''
@@ -356,6 +357,11 @@ class DbManager extends ChangeNotifier{
     await db.rawUpdate('UPDATE settings SET current_system_theme = ? WHERE id = 1', [theme.name],);
   }
 
+  Future<void> setCurrentLanguage(Locale locale) async {
+    final db = await database;
+    await db.rawUpdate('UPDATE settings SET language = ? WHERE id = 1', [locale.languageCode],);
+  }
+
   Future<void> setCurrentTheme(CurrentTheme theme) async {
     final db = await database;
     await db.rawUpdate('UPDATE settings SET current_theme = ? WHERE id = 1', [theme.name],);
@@ -372,6 +378,14 @@ class DbManager extends ChangeNotifier{
     final db = await database;
     final result = await db.rawQuery('SELECT song_directory FROM settings WHERE id = 1',);
     return result.first['song_directory'] as String?;
+  }
+
+  Future<Locale?> getSelectedLanguage() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT language FROM settings WHERE id = 1',);
+    String? code = result.first['language'] as String?;
+    if(code != null) return Locale(code);
+    else return null;
   }
 
   Future<ThemeMode?> getCurrentSystemTheme() async {

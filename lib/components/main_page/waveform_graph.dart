@@ -75,7 +75,7 @@ class _WaveformGraphState extends State<WaveformGraph> {
                   width: barWidth,
                   height: value,
                   decoration: BoxDecoration(
-                    color: colorExtension.primaryColor!.withAlpha(120),
+                    color: colorExtension.primaryColor.withAlpha(120),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),

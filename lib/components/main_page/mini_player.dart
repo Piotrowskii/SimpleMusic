@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as pth;
 import 'package:simple_music_app1/components/main_page/waveform_graph.dart';
 import 'package:simple_music_app1/components/song_art_image.dart';
+import 'package:simple_music_app1/l10n/generated/app_localizations.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 
@@ -20,6 +21,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations localization = AppLocalizations.of(context)!;
+
     return ValueListenableBuilder(
         valueListenable: musicPlayer.currentSong,
         builder: (context,song,nonupdating){
@@ -56,7 +59,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Aktualnie gra:",
+                                  localization.miniPlayerCurrentlyPlaying,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10
@@ -112,7 +115,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Nic aktualnie nie gra",
+                      localization.miniPlayerNothingPlaying,
                       style: TextStyle(
                         fontWeight: FontWeight.bold
                       ),

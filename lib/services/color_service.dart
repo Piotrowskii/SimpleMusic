@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:simple_music_app1/enmus/current_theme.dart';
 import 'package:simple_music_app1/services/db_manager.dart';
 
@@ -12,14 +13,26 @@ class ColorService extends ChangeNotifier{
   DbManager db = locator<DbManager>();
   CurrentTheme currentTheme = CurrentTheme.blue;
   ThemeMode currentThemeMode = ThemeMode.system;
+  Locale currentLanguage = Locale("en");
 
 
   Future<void> initializeWithDb() async{
     CurrentTheme? theme = await db.getCurrentTheme();
     ThemeMode? themeMode = await db.getCurrentSystemTheme();
+    Locale? locale = await db.getSelectedLanguage();
 
-    if(theme != null) changeTheme(theme);
+    if(theme != null) changeTheme(theme);;
     if(themeMode != null) changeSystemTheme(themeMode);
+    
+    if(locale != null) changeLocale(locale);
+    else{
+      Locale systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
+      if(systemLocale.languageCode == "en" || systemLocale.languageCode == "pl"){
+        changeLocale(systemLocale);
+      }else{
+        changeLocale(Locale("en"));
+      }
+    } 
   }
 
 
@@ -52,6 +65,12 @@ class ColorService extends ChangeNotifier{
   void changeSystemTheme(ThemeMode themeMode){
     currentThemeMode = themeMode;
     db.setCurrentSystemTheme(themeMode);
+    notifyListeners();
+  }
+
+  void changeLocale(Locale locale){
+    currentLanguage = locale;
+    db.setCurrentLanguage(locale);
     notifyListeners();
   }
 

@@ -9,9 +9,12 @@ import '../../services/color_theme_extension.dart';
 
 class ButtonRow extends StatefulWidget {
   final Song? song;
+  final Function returnButtonFunction;
 
   const ButtonRow({super.key,
-  required this.song});
+    required this.song,
+    required this.returnButtonFunction
+  });
 
   @override
   State<ButtonRow> createState() => _ButtonRowState();
@@ -104,13 +107,13 @@ class _ButtonRowState extends State<ButtonRow> {
           ),
         ),
         InkWell(
-          onTap: (){},
+          onTap: (){widget.returnButtonFunction();},
           customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Ink(
             decoration: ShapeDecoration(color: colorExtension.primaryColor.withAlpha(180), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Icon(Icons.history, color: Theme.of(context).canvasColor, size: 25,),
+              child: Icon(Icons.keyboard_return, color: Theme.of(context).canvasColor, size: 25,),
             ),
           ),
         )
