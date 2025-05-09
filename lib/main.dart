@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       builder: (context,widget){
 
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'SimpleMusic',
           localizationsDelegates: [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
