@@ -14,9 +14,9 @@ This app was mainly created as a way to learn Flutter, but also for my own perso
 </table>
 
 <p float="left">
-  <img src="https://github.com/user-attachments/assets/060c3baa-96f0-4c81-b99e-2350e218c8a4" width="300" />
-  <img src="https://github.com/user-attachments/assets/156fdb8a-6231-4a9b-84fe-48a448e67eba" width="300" />
-  <img src="https://github.com/user-attachments/assets/ede1dcfe-7677-4329-9e4a-0976f778ae6c" width="300" />
+  <img src="https://github.com/user-attachments/assets/060c3baa-96f0-4c81-b99e-2350e218c8a4" width="250" />
+  <img src="https://github.com/user-attachments/assets/156fdb8a-6231-4a9b-84fe-48a448e67eba" width="250" />
+  <img src="https://github.com/user-attachments/assets/ede1dcfe-7677-4329-9e4a-0976f778ae6c" width="250" />
 </p>
 
 ## Summary
