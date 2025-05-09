@@ -2,7 +2,7 @@
 
 This app was mainly created as a way to learn Flutter, but also for my own personal use, and it works well enough for me. I don’t plan to make major updates or improvements, as I’d like to move on to other projects. For fun (and the experience), I also designed the app icon and Play Store screenshots.
 
-(if you plan on building this i changed the NDK vesrion manually in build.gradle.kts so you will need to change it to version that maches yours, also i only tested the app on Android)
+(if you plan on building this i changed the NDK version manually in build.gradle.kts so you will need to change it to version that matches yours and add key.properties in android folder, also i only tested the app on Android)
 ## Gallery
 
 <table>

@@ -1,5 +1,5 @@
 {
-    "unknownArtist": "Nieznany artysta",
+    "unknownArtist": "Nieznany Artysta",
 
     "settings": "Ustawienia",
     "recent": "Ostatnie",
@@ -8,12 +8,12 @@
     "randomSong": "Losowa piosenka",
     "notInitialized": "Wybierz folder z piosenkami w ustawieniach",
     "emptyFolder" : "Aktualnie wybrany folder jest pusty",
-    "searchSongNotFound" : "Nie znaleziono takiej piosneki",
+    "searchSongNotFound" : "Nie znaleziono takiej piosenki",
     "recentEmpty" : "Nic nie zostało odtworzone",
     "recentlyPlayed" : "Ostatnio odtwarzane",
     "favouriteEmpty" : "Nie masz ulubionych piosenek",
     "errorGettingFavouriteSongs" : "BŁĄD przy pobieraniu listy ulubionych piosenek",
-    "errorGettingRecentSong" : "ERROR przy pobieraniu listy ostatnio granych piosenek",
+    "errorGettingRecentSong" : "BŁĄD przy pobieraniu listy ostatnio granych piosenek",
     "miniPlayerCurrentlyPlaying" : "Aktualnie odtwarzane:",
     "miniPlayerNothingPlaying": "Nic aktualnie nie gra",
 
