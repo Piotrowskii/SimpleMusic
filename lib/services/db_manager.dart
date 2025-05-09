@@ -7,7 +7,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as pth;
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_music_app1/enmus/current_theme.dart';
-import 'package:simple_music_app1/services/permission_service.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/song.dart';
@@ -91,10 +90,6 @@ class DbManager extends ChangeNotifier{
           counter++;
           streamController.add((total, counter));
         }
-    }
-
-    dispose(){
-      streamController.close();
     }
 
     notifyListeners();
@@ -408,6 +403,12 @@ class DbManager extends ChangeNotifier{
   void closeDb(){
     _database?.close();
     _database = null;
+  }
+
+  @override
+  void dispose() {
+    streamController.close();
+    super.dispose();
   }
 
 

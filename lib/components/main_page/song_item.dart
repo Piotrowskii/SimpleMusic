@@ -39,7 +39,7 @@ class _SongItemState extends State<SongItem> {
         widget.customOnTap?.call();
         player.playSongById(song.id);
 
-        if(await db.doesSongExist(song)){
+        if(await db.doesSongExist(song) && context.mounted){
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PlayerPage()),

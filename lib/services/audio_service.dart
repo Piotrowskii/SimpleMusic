@@ -1,7 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 
-import '../enmus/Shuffle.dart';
 import 'music_player.dart';
 
 class MyAudioHandler extends BaseAudioHandler with SeekHandler {

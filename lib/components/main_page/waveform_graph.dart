@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:simple_music_app1/services/color_service.dart';
 import 'package:simple_music_app1/services/get_it_register.dart';
 import 'package:simple_music_app1/services/music_player.dart';
 
 
-import '../../models/song.dart';
 import '../../services/color_theme_extension.dart';
 
 

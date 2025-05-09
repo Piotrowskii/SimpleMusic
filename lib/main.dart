@@ -24,7 +24,15 @@ void main() async{
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await startAudioSession(); // Na razie tylko zatrzymuje :(
-  
+
+  await AudioService.init(
+    builder: () => MyAudioHandler(),
+    config: AudioServiceConfig(
+        androidNotificationChannelId: 'com.mycompany.myapp.channel.audio',
+        androidNotificationChannelName: 'Music playback',
+        androidNotificationOngoing: true
+    ),
+  );
 
   runApp(const MyApp());
 
@@ -37,11 +45,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color primary = Color.fromARGB(255,58, 89, 209);
-    Color background = Color.fromRGBO(58, 89, 209, 0.1);
     ColorService colorService = locator<ColorService>();
-
-
 
 
     return ListenableBuilder(
