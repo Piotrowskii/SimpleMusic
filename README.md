@@ -2,6 +2,7 @@
 
 This app was mainly created as a way to learn Flutter, but also for my own personal use, and it works well enough for me. I don’t plan to make major updates or improvements, as I’d like to move on to other projects. For fun (and the experience), I also designed the app icon and Play Store screenshots.
 
+(if you plan on building this i changed the NDK vesrion manually in build.gradle.kts so you will need to change it to version that maches yours)
 ## Gallery
 
 <table>
@@ -42,3 +43,4 @@ This app was mainly created as a way to learn Flutter, but also for my own perso
   <li>Add support for custom color themes</li>
   <li>Remove code repetition in some widgets code</li>
 </ul>
+
