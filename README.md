@@ -20,6 +20,20 @@ This app was mainly created as a way to learn Flutter, but also for my own perso
   <img src="https://github.com/user-attachments/assets/ede1dcfe-7677-4329-9e4a-0976f778ae6c" width="250" />
 </p>
 
+## Features
+
+<p>📋 Features: </p>
+<ul>
+  <li>Playback of .mp4, .flac, .ogg, and .wav audio files</li>
+  <li>Ability to loop and shuffle songs</li>
+  <li>Ability to select from 7 color themes + dark and light mode</li>
+  <li>Ongoing notification with playback controls and a progress bar</li>
+  <li>Mark songs as favorites</li>
+  <li>Automatically remembers recently played songs</li>
+  <li>Simple but nice UI (in my opinion)</li>
+  <li>Multilingual support: Polish and English</li>
+</ul>
+
 ## Summary
 
 <p>💡 Things I Learned:</p>
@@ -42,5 +56,6 @@ This app was mainly created as a way to learn Flutter, but also for my own perso
   <li>Fix naming in DB class and other class names</li>
   <li>Add support for custom color themes</li>
   <li>Remove code repetition in some widgets code</li>
+  <li>Remember last played song (have it on paused when you open app)</li>
 </ul>
 
