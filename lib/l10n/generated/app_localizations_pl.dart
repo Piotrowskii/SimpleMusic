@@ -9,7 +9,7 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
-  String get unknownArtist => 'Nieznany artysta';
+  String get unknownArtist => 'Nieznany Artysta';
 
   @override
   String get settings => 'Ustawienia';
@@ -33,7 +33,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get emptyFolder => 'Aktualnie wybrany folder jest pusty';
 
   @override
-  String get searchSongNotFound => 'Nie znaleziono takiej piosneki';
+  String get searchSongNotFound => 'Nie znaleziono takiej piosenki';
 
   @override
   String get recentEmpty => 'Nic nie zostało odtworzone';
@@ -48,7 +48,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get errorGettingFavouriteSongs => 'BŁĄD przy pobieraniu listy ulubionych piosenek';
 
   @override
-  String get errorGettingRecentSong => 'ERROR przy pobieraniu listy ostatnio granych piosenek';
+  String get errorGettingRecentSong => 'BŁĄD przy pobieraniu listy ostatnio granych piosenek';
 
   @override
   String get miniPlayerCurrentlyPlaying => 'Aktualnie odtwarzane:';
